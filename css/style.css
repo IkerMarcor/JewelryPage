@@ -605,8 +605,9 @@ pre code {
   margin-left: auto;
 }
 
-.con-comic-sans {
+.titulo-logo {
   font-family: "Comic Sans MS", "Comic Sans", cursive;
+  font-size: 28px;
 }
 
 @media (min-width: 576px) {

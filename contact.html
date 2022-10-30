@@ -127,22 +127,116 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a href="index.html" class="nav-item nav-link">Home</a>
-                            <a href="shop.html" class="nav-item nav-link">Shop</a>
-                            <a href="detail.html" class="nav-item nav-link">Shop Detail</a>
-                            <div class="nav-item dropdown">
+                            <a href="index.html" class="nav-item nav-link">Inicio</a>
+                            <a href="shop.html" class="nav-item nav-link">Carrito de compras</a>
+                            <a href="detail.html" class="nav-item nav-link">Pago</a>
+                            <!--<div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu rounded-0 m-0">
                                     <a href="cart.html" class="dropdown-item">Shopping Cart</a>
                                     <a href="checkout.html" class="dropdown-item">Checkout</a>
-                                </div>
-                            </div>
+                                </div>!-->
                             <a href="contact.html" class="nav-item nav-link active">Contact</a>
                         </div>
-                        <div class="navbar-nav ml-auto py-0">
-                            <a href="" class="nav-item nav-link">Login</a>
-                            <a href="" class="nav-item nav-link">Register</a>
-                        </div>
+
+                        <div class="navbar-nav ml-2 py-0">
+                            <button type="button" class="btn btn-primary btn-lg login" data-toggle="modal" data-target="#ModalLoginForm">
+                                Login
+                            </button>
+                            <!-- Modal HTML Markup -->
+                        <div id="ModalLoginForm" class="modal fade">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title">Login</h1>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form role="form" method="POST" action="">
+                                            <input type="hidden" name="_token" value="">
+                                            <div class="form-group">
+                                                <label class="control-label">Correo electrónico</label>
+                                                <div>
+                                                    <input type="email" class="form-control input-lg" name="email" value="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Contraseña</label>
+                                                <div>
+                                                    <input type="password" class="form-control input-lg" name="password">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" name="remember"> Recuérdame
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <button type="submit" class="btn btn-success">Login</button>
+
+                                                    <a class="btn btn-link" href="">¿Olvidaste tu contraseña?</a>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+                        <!--Login termina-->
+                        <!--Register-->
+                        <div class="navbar-nav ml-2 py-0">  
+                            <button type="button" class="btn btn-primary btn-lg login" data-toggle="modal" data-target="#ModalRegisterForm">
+                                Registrate
+                            </button>
+                        <div id="ModalRegisterForm" class="modal fade">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title">Registrate</h1>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form role="form" method="POST" action="">
+                                            <input type="hidden" name="_token" value="">
+                                            <div class="form-group">
+                                                <label class="control-label">Nombre de usuario</label>
+                                                <div>
+                                                    <input type="text" class="form-control input-lg" name="name" value="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Correo electrónico</label>
+                                                <div>
+                                                    <input type="email" class="form-control input-lg" name="email" value="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Contraseña</label>
+                                                <div>
+                                                    <input type="password" class="form-control input-lg" name="password">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Confirmar Contraseña</label>
+                                                <div>
+                                                    <input type="password" class="form-control input-lg" name="password_confirmation">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <button type="submit" class="btn btn-success">
+                                                        Registrarse
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
                     </div>
                 </nav>
             </div>
@@ -154,11 +248,11 @@
     <!-- Page Header Start -->
     <div class="container-fluid bg-secondary mb-5">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-            <h1 class="font-weight-semi-bold text-uppercase mb-3">Contact Us</h1>
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">Contactanos</h1>
             <div class="d-inline-flex">
-                <p class="m-0"><a href="">Home</a></p>
+                <p class="m-0"><a href="">Inicio</a></p>
                 <p class="m-0 px-2">-</p>
-                <p class="m-0">Contact</p>
+                <p class="m-0">Contacto</p>
             </div>
         </div>
     </div>
@@ -168,7 +262,7 @@
     <!-- Contact Start -->
     <div class="container-fluid pt-5">
         <div class="text-center mb-4">
-            <h2 class="section-title px-5"><span class="px-2">Contact For Any Queries</span></h2>
+            <h2 class="section-title px-5"><span class="px-2">Contactanos por cualquier duda</span></h2>
         </div>
         <div class="row px-xl-5">
             <div class="col-lg-7 mb-5">
@@ -176,29 +270,28 @@
                     <div id="success"></div>
                     <form name="sentMessage" id="contactForm" novalidate="novalidate">
                         <div class="control-group">
-                            <input type="text" class="form-control" id="name" placeholder="Your Name"
-                                required="required" data-validation-required-message="Please enter your name" />
+                            <input type="text" class="form-control" id="name" placeholder="Tu nombre"
+                                required="required" data-validation-required-message="Por favor introduce tu nombre" />
                             <p class="help-block text-danger"></p>
                         </div>
                         <div class="control-group">
-                            <input type="email" class="form-control" id="email" placeholder="Your Email"
-                                required="required" data-validation-required-message="Please enter your email" />
+                            <input type="email" class="form-control" id="email" placeholder="Tu correo electrónico"
+                                required="required" data-validation-required-message="Por favor introduce tu correo electrónico" />
                             <p class="help-block text-danger"></p>
                         </div>
                         <div class="control-group">
-                            <input type="text" class="form-control" id="subject" placeholder="Subject"
-                                required="required" data-validation-required-message="Please enter a subject" />
+                            <input type="text" class="form-control" id="subject" placeholder="Asunto"
+                                required="required" data-validation-required-message="Por favor introduce un asunto" />
                             <p class="help-block text-danger"></p>
                         </div>
                         <div class="control-group">
-                            <textarea class="form-control" rows="6" id="message" placeholder="Message"
+                            <textarea class="form-control" rows="6" id="message" placeholder="Mensaje"
                                 required="required"
-                                data-validation-required-message="Please enter your message"></textarea>
+                                data-validation-required-message="Por favor introduce un mensaje"></textarea>
                             <p class="help-block text-danger"></p>
                         </div>
                         <div>
-                            <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">Send
-                                Message</button>
+                            <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">Enviar mensaje</button>
                         </div>
                     </form>
                 </div>
@@ -229,51 +322,23 @@
         <div class="row px-xl-5 pt-5">
             <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
                 <a href="" class="text-decoration-none">
-                    <h1 class="mb-4 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border border-white px-3 mr-1">E</span>Shopper</h1>
+                    <h1 class="mb-4 display-5 font-weight-semi-bold con-comic-sans"><span class="text-primary font-weight-bold border"><img src="img/LOGO.jpg" height="150" alt="" style="padding: 25px;"></span>Finkies</h1>
                 </a>
-                <p>Dolore erat dolor sit lorem vero amet. Sed sit lorem magna, ipsum no sit erat lorem et magna ipsum dolore amet erat.</p>
-                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>123 Street, New York, USA</p>
-                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@example.com</p>
-                <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
+                <p>🧚🏼 aretitos cool para gente cool 🧚🏼</p>
+                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>direccion</p>
+                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>correo</p>
+                <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>insertar numero telefonico</p>
             </div>
             <div class="col-lg-8 col-md-12">
                 <div class="row">
                     <div class="col-md-4 mb-5">
-                        <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
+                        <h5 class="font-weight-bold text-dark mb-4">Atajos</h5>
                         <div class="d-flex flex-column justify-content-start">
-                            <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                            <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                            <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                            <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                            <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                            <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                            <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Inicio</a>
+                            <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Carrito de compras</a>
+                            <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Pago</a>
+                            <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contáctanos</a>
                         </div>
-                    </div>
-                    <div class="col-md-4 mb-5">
-                        <h5 class="font-weight-bold text-dark mb-4">Quick Links</h5>
-                        <div class="d-flex flex-column justify-content-start">
-                            <a class="text-dark mb-2" href="index.html"><i class="fa fa-angle-right mr-2"></i>Home</a>
-                            <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                            <a class="text-dark mb-2" href="detail.html"><i class="fa fa-angle-right mr-2"></i>Shop Detail</a>
-                            <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Shopping Cart</a>
-                            <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Checkout</a>
-                            <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-5">
-                        <h5 class="font-weight-bold text-dark mb-4">Newsletter</h5>
-                        <form action="">
-                            <div class="form-group">
-                                <input type="text" class="form-control border-0 py-4" placeholder="Your Name" required="required" />
-                            </div>
-                            <div class="form-group">
-                                <input type="email" class="form-control border-0 py-4" placeholder="Your Email"
-                                    required="required" />
-                            </div>
-                            <div>
-                                <button class="btn btn-primary btn-block border-0 py-3" type="submit">Subscribe Now</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -281,10 +346,10 @@
         <div class="row border-top border-light mx-xl-5 py-4">
             <div class="col-md-6 px-xl-0">
                 <p class="mb-md-0 text-center text-md-left text-dark">
-                    &copy; <a class="text-dark font-weight-semi-bold" href="#">Your Site Name</a>. All Rights Reserved. Designed
-                    by
+                    &copy; <a class="text-dark font-weight-semi-bold" href="#">Finkies</a>. Todos los derechos reservados. Diseñado
+                    por
                     <a class="text-dark font-weight-semi-bold" href="https://htmlcodex.com">HTML Codex</a><br>
-                    Distributed By <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                    Distribuido por <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
                 </p>
             </div>
             <div class="col-md-6 px-xl-0 text-center text-md-right">
@@ -311,6 +376,7 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    
 </body>
 
 </html>

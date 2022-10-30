@@ -49,7 +49,7 @@
         <div class="row align-items-center py-3 px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
                 <a href="" class="text-decoration-none">
-                    <h1 class="m-0 display-5 font-weight-semi-bold con-comic-sans"><span class="text-primary font-weight-bold "><img src="img\LOGO.jpg" rel="icon" height="150" style="padding: 25px;"></span>Finkies</h1>
+                    <h1 class="m-0 display-5 font-weight-semi-bold titulo-logo"><span class="text-primary font-weight-bold "><img src="img\LOGO.jpg" rel="icon" height="110" style="padding-left: 25px; padding-right: 25px;"></span>Finkies</h1>
                 </a>
             </div>
             <div class="col-lg-6 col-6 text-left">
@@ -113,6 +113,7 @@
                             <a href="contact.html" class="nav-item nav-link">Contacto</a>
                         </div>
                         <div class="navbar-nav ml-2 py-0">
+                            <!--Login empieza-->
                             <button type="button" class="btn btn-primary btn-lg login" data-toggle="modal" data-target="#ModalLoginForm">
                                 Login
                             </button>
@@ -160,56 +161,57 @@
                             </div><!-- /.modal-dialog -->
                         </div><!-- /.modal -->
                         </div>
+                        <!--Login termina-->
+                        <!--Register-->
                         <div class="navbar-nav ml-2 py-0">  
                             <button type="button" class="btn btn-primary btn-lg login" data-toggle="modal" data-target="#ModalRegisterForm">
                                 Registrate
                             </button>
-                            <!-- Modal HTML Markup -->
-<div id="ModalRegisterForm" class="modal fade">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title">Registrate</h1>
-            </div>
-            <div class="modal-body">
-                <form role="form" method="POST" action="">
-                    <input type="hidden" name="_token" value="">
-                    <div class="form-group">
-                        <label class="control-label">Nombre de usuario</label>
-                        <div>
-                            <input type="text" class="form-control input-lg" name="name" value="">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Correo electrónico</label>
-                        <div>
-                            <input type="email" class="form-control input-lg" name="email" value="">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Contraseña</label>
-                        <div>
-                            <input type="password" class="form-control input-lg" name="password">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Confirmar Contraseña</label>
-                        <div>
-                            <input type="password" class="form-control input-lg" name="password_confirmation">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div>
-                            <button type="submit" class="btn btn-success">
-                                Registrarse
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+                        <div id="ModalRegisterForm" class="modal fade">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title">Registrate</h1>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form role="form" method="POST" action="">
+                                            <input type="hidden" name="_token" value="">
+                                            <div class="form-group">
+                                                <label class="control-label">Nombre de usuario</label>
+                                                <div>
+                                                    <input type="text" class="form-control input-lg" name="name" value="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Correo electrónico</label>
+                                                <div>
+                                                    <input type="email" class="form-control input-lg" name="email" value="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Contraseña</label>
+                                                <div>
+                                                    <input type="password" class="form-control input-lg" name="password">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Confirmar Contraseña</label>
+                                                <div>
+                                                    <input type="password" class="form-control input-lg" name="password_confirmation">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div>
+                                                    <button type="submit" class="btn btn-success">
+                                                        Registrarse
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
                         </div>
                     </div>
                 </nav>
@@ -220,17 +222,17 @@
                             <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                                 <div class="p-3" style="max-width: 700px;">
                                     <h4 class="text-light text-uppercase font-weight-medium mb-3">10% de descuento en su primera compra</h4>
-                                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">Aretito esterik</h3>
+                                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">producto</h3>
                                     <a href="" class="btn btn-light py-2 px-3">Comprar</a>
                                 </div>
                             </div>
                         </div>
                         <div class="carousel-item" style="height: 410px;">
-                            <img class="img-fluid" src="img/image0prueba.jpg" alt="Image">
+                            <img class="img-fluid" src="img/collar.png" alt="Image">
                             <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                                 <div class="p-3" style="max-width: 700px;">
                                     <h4 class="text-light text-uppercase font-weight-medium mb-3">10% de descuento en su primera compra</h4>
-                                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">Camiseta chila</h3>
+                                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">producto</h3>
                                     <a href="" class="btn btn-light py-2 px-3">Comprar</a>
                                 </div>
                             </div>
@@ -338,9 +340,9 @@
                 <div class="position-relative bg-secondary text-center text-md-right text-white mb-2 py-5 px-5">
                     <img src="img/offer-1.png" alt="">
                     <div class="position-relative" style="z-index: 1;">
-                        <h5 class="text-uppercase text-primary mb-3">20% off the all order</h5>
-                        <h1 class="mb-4 font-weight-semi-bold">Spring Collection</h1>
-                        <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>
+                        <h5 class="text-uppercase text-primary mb-3">conozca nuestras colecciones de temporada</h5>
+                        <h1 class="mb-4 font-weight-semi-bold">HALLOWEEN</h1>
+                        <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Explorar</a>
                     </div>
                 </div>
             </div>
@@ -348,9 +350,9 @@
                 <div class="position-relative bg-secondary text-center text-md-left text-white mb-2 py-5 px-5">
                     <img src="img/offer-2.png" alt="">
                     <div class="position-relative" style="z-index: 1;">
-                        <h5 class="text-uppercase text-primary mb-3">20% off the all order</h5>
-                        <h1 class="mb-4 font-weight-semi-bold">Winter Collection</h1>
-                        <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>
+                        <h5 class="text-uppercase text-primary mb-3">conozca nuestras colecciones de temporada</h5>
+                        <h1 class="mb-4 font-weight-semi-bold">NAVIDAD</h1>
+                        <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Explorar</a>
                     </div>
                 </div>
             </div>
@@ -368,7 +370,7 @@
             <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                 <div class="card product-item border-0 mb-4">
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="img/broly.jpg" alt="">
+                        <img class="img-fluid w-100" src="img/imagenqueseraproducto.jpeg" alt="">
                     </div>
                     <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                         <h6 class="text-truncate mb-3">producto</h6>
@@ -385,7 +387,7 @@
             <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                 <div class="card product-item border-0 mb-4">
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="img/broly.jpg" alt="">
+                        <img class="img-fluid w-100" src="img/imagenqueseraproducto.jpeg" alt="">
                     </div>
                     <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                         <h6 class="text-truncate mb-3">producto</h6>
@@ -401,7 +403,7 @@
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                    <img class="img-fluid w-100" src="img/broly.jpg" alt="">
+                    <img class="img-fluid w-100" src="img/imagenqueseraproducto.jpeg" alt="">
                 </div>
                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                     <h6 class="text-truncate mb-3">producto</h6>
@@ -416,7 +418,7 @@
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                    <img class="img-fluid w-100" src="img/broly.jpg" alt="">
+                    <img class="img-fluid w-100" src="img/imagenqueseraproducto.jpeg" alt="">
                 </div>
                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                     <h6 class="text-truncate mb-3">producto</h6>
@@ -432,7 +434,7 @@
             <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                 <div class="card product-item border-0 mb-4">
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="img/broly.jpg" alt="">
+                        <img class="img-fluid w-100" src="img/imagenqueseraproducto.jpeg" alt="">
                     </div>
                     <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                         <h6 class="text-truncate mb-3">producto</h6>
@@ -449,7 +451,7 @@
             <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                 <div class="card product-item border-0 mb-4">
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="img/broly.jpg" alt="">
+                        <img class="img-fluid w-100" src="img/imagenqueseraproducto.jpeg" alt="">
                     </div>
                     <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                         <h6 class="text-truncate mb-3">producto</h6>
@@ -466,7 +468,7 @@
             <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                 <div class="card product-item border-0 mb-4">
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="img/broly.jpg" alt="">
+                        <img class="img-fluid w-100" src="img/imagenqueseraproducto.jpeg" alt="">
                     </div>
                     <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                         <h6 class="text-truncate mb-3">producto</h6>
@@ -483,7 +485,7 @@
             <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                 <div class="card product-item border-0 mb-4">
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                        <img class="img-fluid w-100" src="img/broly.jpg" alt="">
+                        <img class="img-fluid w-100" src="img/imagenqueseraproducto.jpeg" alt="">
                     </div>
                     <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                         <h6 class="text-truncate mb-3">producto</h6>
@@ -502,26 +504,24 @@
     <!-- Products End -->
 
 
-    <!-- Subscribe Start -->
     <div class="container-fluid bg-secondary my-5">
         <div class="row justify-content-md-center py-5 px-xl-5">
             <div class="col-md-6 col-12 py-5">
                 <div class="text-center mb-2 pb-2">
-                    <h2 class="section-title px-5 mb-3"><span class="bg-secondary px-2">Stay Updated</span></h2>
-                    <p>Amet lorem at rebum amet dolores. Elitr lorem dolor sed amet diam labore at justo ipsum eirmod duo labore labore.</p>
+                    <h2 class="section-title px-5 mb-3"><span class="bg-secondary px-2">Recibe cupones de descuento</span></h2>
+                    <p>Introduce tu correo para recibir cupones de descuentos para nuestros productos!</p>
                 </div>
                 <form action="">
                     <div class="input-group">
-                        <input type="text" class="form-control border-white p-4" placeholder="Email Goes Here">
+                        <input type="text" class="form-control border-white p-4" placeholder="Introduce tu correo...">
                         <div class="input-group-append">
-                            <button class="btn btn-primary px-4">Subscribe</button>
+                            <button class="btn btn-primary px-4">Subscribirse</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <!-- Subscribe End -->
 
 
     <!-- Products Start -->
@@ -672,6 +672,7 @@
 
 
     <!-- Vendor Start -->
+    <!-- 
     <div class="container-fluid py-5">
         <div class="row px-xl-5">
             <div class="col">
@@ -704,6 +705,7 @@
             </div>
         </div>
     </div>
+    -->
     <!-- Vendor End -->
 
 
@@ -712,7 +714,7 @@
         <div class="row px-xl-5 pt-5">
             <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
                 <a href="" class="text-decoration-none">
-                    <h1 class="mb-4 display-5 font-weight-semi-bold con-comic-sans"><span class="text-primary font-weight-bold border"><img src="img/LOGO.jpg" height="150" alt=""></span>Finkies</h1>
+                    <h1 class="mb-4 display-5 font-weight-semi-bold titulo-logo"><span class="text-primary font-weight-bold border"><img src="img/LOGO.jpg" height="110" alt="" style="padding-left: 25px; padding-right: 25px;"></span>Finkies</h1>
                 </a>
                 <p>🧚🏼 aretitos cool para gente cool 🧚🏼</p>
                 <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>direccion</p>
