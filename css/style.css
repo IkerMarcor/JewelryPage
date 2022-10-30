@@ -605,6 +605,10 @@ pre code {
   margin-left: auto;
 }
 
+.con-comic-sans {
+  font-family: "Comic Sans MS", "Comic Sans", cursive;
+}
+
 @media (min-width: 576px) {
   .container, .container-sm {
     max-width: 540px;
