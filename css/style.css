@@ -9591,3 +9591,16 @@ a.text-dark:hover, a.text-dark:focus {
 .login {
   font-size: 15px;
 }
+
+.similarbox {
+  align-self: center;
+}
+.similar { 
+  max-width: 200px;
+  height: 200px;
+}
+
+.agregar {
+  padding: 50px;
+  padding-top: 0px;
+}
