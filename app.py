@@ -53,7 +53,7 @@ def agregar_producto():
         #nombre,precio,descripcion,foto,existencia,activo
         query=f'INSERT INTO productos (nombre,precio,descripcion,foto,existencia,activo) VALUES ("{nombre_introducido}",{precio_introducido},"{descripcion_introducido}","{foto_ruta}",{existencia_introducido},{activo_introducido})'
         cursor.execute(query)
-        return render_template('agregar_producto.html')
+        return render_template('agregar_producto.html', mensaje='Articulo agregado exitosamente')
 
 
 @app.route('/cart.html')
@@ -79,7 +79,6 @@ def logout():
         return redirect("/")
 
 if __name__=='__main__':
-    
     app.run(debug=True)
     conexion.close()
 
