@@ -1,13 +1,32 @@
 #todo en español
-from flask import Flask, request, render_template
+from flask import Flask, render_template, request, session, redirect, flash
 import mysql.connector
 
 
 app = Flask(__name__)
+app.secret_key='234524assdg'
+conexion=mysql.connector.connect(user='admin',password='contrasenaAdmin',host='localhost',database='finkies')
+cursor=conexion.cursor()
 
-@app.route('/')
+@app.route('/',methods=['GET','POST'])
 def index():
-    return render_template('index.html')
+    if request.method=='GET':
+        return render_template('index.html')
+    if request.method=='POST':
+        correo_introducido=request.form['email']
+        contrasena_introducida=request.form['password']
+        query=f'SELECT username,correo,contrasena FROM usuarios WHERE correo="{correo_introducido}" AND contrasena="{contrasena_introducida}";'
+        cursor.execute(query)
+        resultados=cursor.fetchall()
+        if len(resultados)>0:
+            session['correo']=correo_introducido
+            session['usuario']=resultados[0][0]
+            print(session['usuario'])
+            session['logged_in']=True
+            session['datos_erroneos']=False
+        else:
+            session['datos_erroneos']=True
+        return render_template('index.html')
 
 @app.route('/shop.html')
 def tienda():
@@ -33,15 +52,14 @@ def contacto():
 def producto():
     return render_template('producto.html')
 
+@app.route('/logout',methods=['GET'])
+def logout():
+    if request.method == 'GET':
+        session.clear()
+        return redirect("/")
 
 if __name__=='__main__':
-    conexion=mysql.connector.connect(user='admin',password='contrasenaAdmin',host='localhost',database='finkies')
-    cursor=conexion.cursor()
-    query='SELECT * FROM usuarios;'
-    cursor.execute(query)
-    resultados=cursor.fetchall()
-    for fila in resultados:
-        print(fila)
+    
     app.run(debug=True)
     conexion.close()
 
