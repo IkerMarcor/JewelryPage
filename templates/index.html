@@ -64,17 +64,18 @@
                                     {% endif %}
                                     <div class="modal-body">
                                         <form role="form" method="POST" action="">
+                                            <input type="hidden" name="login" value="login">
                                             <input type="hidden" name="_token" value="">
                                             <div class="form-group">
                                                 <label class="control-label">Correo electrónico</label>
                                                 <div>
-                                                    <input type="email" class="form-control input-lg" name="email" value="">
+                                                    <input type="email" class="form-control input-lg" name="email" value="" required>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label">Contraseña</label>
                                                 <div>
-                                                    <input type="password" class="form-control input-lg" name="password">
+                                                    <input type="password" class="form-control input-lg" name="password" required>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -113,31 +114,50 @@
                                     </div>
                                     <div class="modal-body">
                                         <form role="form" method="POST" action="">
-                                            <input type="hidden" name="register" value="register">
+                                            <input type="hidden" name="registro" value="registro">
                                             <input type="hidden" name="_token" value="">
                                             <div class="form-group">
-                                                <label class="control-label">Nombre de usuario</label>
+                                                <label class="control-label">Nombre de usuario*</label>
                                                 <div>
-                                                    <input type="text" class="form-control input-lg" name="name" value="">
+                                                    <input type="text" class="form-control input-lg" name="username" value="" required> <!--registrar username-->
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label">Correo electrónico</label>
+                                                <label class="control-label">Correo electrónico*</label>
                                                 <div>
-                                                    <input type="email" class="form-control input-lg" name="email" value="">
+                                                    <input type="email" class="form-control input-lg" name="email" value="" required> <!--registrar email-->
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label">Contraseña</label>
+                                                <label class="control-label">Nombres*</label>
                                                 <div>
-                                                    <input type="password" class="form-control input-lg" name="password">
+                                                    <input type="text" class="form-control input-lg" name="nombre" value="" required> <!--registrar nombres-->
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label">Confirmar Contraseña</label>
+                                                <label class="control-label">Primer Apellido*</label>
                                                 <div>
-                                                    <input type="password" class="form-control input-lg" name="password_confirmation">
+                                                    <input type="text" class="form-control input-lg" name="apellido1" value="" required> <!--registrar apellido1-->
                                                 </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Segundo Apellido</label>
+                                                <div>
+                                                    <input type="text" class="form-control input-lg" name="apellido2" value=""> <!--registrar apellido2-->
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Contraseña*</label>
+                                                <div>
+                                                    <input type="password" class="form-control input-lg" name="password" onkeyup='check();' required> <!--registrar contraseña-->
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Confirmar Contraseña*</label>
+                                                <div>
+                                                    <input type="password" class="form-control input-lg" name="password_confirmation" onkeyup='check();' required> <!--registrar confirmar contraseña-->
+                                                </div>
+                                                <span id='message'></span>
                                             </div>
                                             <div class="form-group">
                                                 <div>
@@ -647,12 +667,19 @@
     </div>
     -->
     <!-- Vendor End -->
-
-</body>
 <script>
-
-    
+    var check = function() {
+        if (document.getElementById('password').value ==
+          document.getElementById('confirm_password').value) {
+          document.getElementById('message').style.color = 'green';
+          document.getElementById('message').innerHTML = 'Contraseñas iguales';
+        } else {
+          document.getElementById('message').style.color = 'red';
+          document.getElementById('message').innerHTML = 'Contraseñas diferentes';
+        }
+      }
 </script>
+</body>
 {% endblock %}
 {% block footer %}
 {{super()}}

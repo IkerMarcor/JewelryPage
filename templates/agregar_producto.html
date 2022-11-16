@@ -23,6 +23,8 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="/static/css/style.css" rel="stylesheet">
 </head>
+
+    
 <body>
     <!-- Topbar Start -->
     <!--
@@ -55,6 +57,9 @@
 
     <!-- Add product form Start -->
     <div class="agregar">
+        {% if mensaje=='exito' %}
+            <p style="color: red;">Articulo agregado exitosamente</p>
+        {% endif %}
         <form role="form" method="POST" action="" enctype="multipart/form-data">
             <div class="form-group ">
               <label for="">Nombre del producto</label>
