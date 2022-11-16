@@ -63,19 +63,24 @@ def index():
             else:
                 return render_template('index.html')
 
-@app.route('/shop.html')
+@app.route('/shop')
 def tienda():
     return render_template('shop.html')
 
-@app.route('/ver_ordenes.html',methods=['GET','POST'])
+@app.route('/ver_ordenes',methods=['GET','POST'])
 def ordenes():
     if request.method=='GET':
         idusuario=f'SELECT idusuarios FROM usuarios WHERE username="{current_user}";'
         return render_template('ver_ordenes.html')#usuario_actual=idusuario
-        
+
+@app.route('/ver_orden',methods=['GET','POST'])
+def orden():
+    if request.method=='GET':
+        idusuario=f'SELECT idusuarios FROM usuarios WHERE username="{current_user}";'
+        return render_template('ver_orden.html')#usuario_actual=idusuario
     
 
-@app.route('/agregar_producto.html', methods=['GET','POST'])
+@app.route('/agregar_producto', methods=['GET','POST'])
 def agregar_producto():
     if request.method=='GET':
         return render_template('agregar_producto.html')
@@ -96,15 +101,15 @@ def agregar_producto():
         return render_template('agregar_producto.html', mensaje='Articulo agregado exitosamente')
 
 
-@app.route('/cart.html')
+@app.route('/cart')
 def carrito():
     return render_template('cart.html')
 
-@app.route('/checkout.html')
+@app.route('/checkout')
 def pago():
     return render_template('checkout.html')
 
-@app.route('/contact.html')
+@app.route('/contact')
 def contacto():
     return render_template('contact.html')
 
@@ -112,6 +117,10 @@ def contacto():
 def producto(id):
     producto=productos_dict[id]
     return render_template('producto.html', producto=producto)
+
+#@app.route('/agregarcarrito')
+#def agregarcarrito(id):
+
 
 @app.route('/logout',methods=['GET'])
 def logout():
