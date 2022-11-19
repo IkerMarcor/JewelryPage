@@ -19,6 +19,7 @@ current_user=''
 @app.route('/',methods=['GET','POST'])
 def index():
     if request.method=='GET':
+        print(productos_dict)
         return render_template('index.html')
     if request.method=='POST':
         if 'login' in request.form:
