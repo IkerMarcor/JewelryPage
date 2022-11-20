@@ -9,12 +9,16 @@ app = Flask(__name__)
 app.secret_key='234524assdg'
 conexion=mysql.connector.connect(user='admin',password='contrasenaAdmin',host='localhost',database='finkies')
 cursor=conexion.cursor()
-query=f'SELECT * FROM productos;'
 cursor_dict=conexion.cursor(dictionary=True)
+query='SELECT * FROM producto_general;'
+select_categorias='SELECT * FROM categoria_producto'
 cursor_dict.execute(query)
 productos=cursor_dict.fetchall()
 productos_dict=lista_a_dict(productos)
 current_user=''
+cursor_dict.execute(select_categorias)
+categorias=cursor_dict.fetchall()
+
 
 @app.route('/',methods=['GET','POST'])
 def index():
@@ -84,22 +88,25 @@ def orden():
 @app.route('/agregar_producto', methods=['GET','POST'])
 def agregar_producto():
     if request.method=='GET':
-        return render_template('agregar_producto.html')
+        return render_template('agregar_producto.html', categorias=categorias)
     if request.method=='POST':
         nombre_introducido=request.form['nombre_producto']
-        precio_introducido=str(request.form['precio'])
         descripcion_introducido=request.form['descripcion']
         foto_introducida=request.files['foto']
         foto_ruta = foto_introducida.filename
         foto_introducida.save(os.path.join('static/img/',foto_ruta))
-        existencia_introducido=str(request.form['existencia'])
         if request.form['activo']=='on':
             activo_introducido=True
         else:
             activo_introducido=False
-        query=f'INSERT INTO productos (nombre,precio,descripcion,foto,existencia,activo) VALUES ("{nombre_introducido}",{precio_introducido},"{descripcion_introducido}","{foto_ruta}",{existencia_introducido},{activo_introducido})'
-        cursor.execute(query)
-        return render_template('agregar_producto.html', mensaje='Articulo agregado exitosamente')
+        query_select = f'SELECT id_categoria FROM categoria_producto WHERE categoria = "{request.form["categoria"]}";'
+        cursor_dict.execute(query_select)
+        lista_id_categoria = cursor_dict.fetchall()
+        id_categoria = lista_id_categoria[0]["id_categoria"]
+        query=f'INSERT INTO producto_general (nombre_general,descripcion_general,imagen,id_categoria,activo) VALUES ("{nombre_introducido}","{descripcion_introducido}","{foto_ruta}","{id_categoria}",{activo_introducido})'
+        cursor_dict.execute(query)
+        conexion.commit()
+        return render_template('agregar_producto.html', mensaje='exito',categorias=categorias)
 
 
 @app.route('/cart')
@@ -128,6 +135,10 @@ def logout():
     if request.method == 'GET':
         session.clear()
         return redirect("/")
+
+@app.route('/productos_generales',methods=['GET'])
+def productos_generales():
+    return render_template('productos_generales.html')
 
 if __name__=='__main__':
     app.run(debug=True)
