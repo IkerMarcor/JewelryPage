@@ -14,16 +14,29 @@ query='SELECT * FROM producto_general;'
 select_categorias='SELECT * FROM categoria_producto'
 cursor_dict.execute(query)
 productos=cursor_dict.fetchall()
-productos_dict=lista_a_dict(productos)
+#diccionario de todos los productos generales
+productos_dict=lista_a_dict(productos,'id_producto_general')
 current_user=''
 cursor_dict.execute(select_categorias)
 categorias=cursor_dict.fetchall()
+#diccionario de todos las categorias
+categorias=lista_a_dict(categorias,'id_categoria')
+query = 'SELECT * FROM talla;'
+cursor_dict.execute(query)
+tallas = cursor_dict.fetchall()
+#diccionario de todas las tallas
+tallas = lista_a_dict(tallas,'id_talla')
+query = 'SELECT * FROM color;'
+cursor_dict.execute(query)
+colores = cursor_dict.fetchall()
+#diccionario de todos los colores
+colores = lista_a_dict(colores,'id_color')
 
 
 @app.route('/',methods=['GET','POST'])
 def index():
     if request.method=='GET':
-        print(productos_dict)
+        print(categorias)
         return render_template('index.html')
     if request.method=='POST':
         if 'login' in request.form:
@@ -138,7 +151,53 @@ def logout():
 
 @app.route('/productos_generales',methods=['GET'])
 def productos_generales():
-    return render_template('productos_generales.html')
+    return render_template('productos_generales.html',productos=productos_dict,categorias=categorias)
+
+@app.route('/agregar_producto_especifico/<id_producto_general>', methods=['GET','POST'])
+def agregar_producto_especifico(id_producto_general):
+    if request.method == 'GET':
+        producto = productos_dict[str(id_producto_general)]
+        return render_template("agregar_subproducto.html",producto=producto, colores=colores, tallas=tallas)
+    if request.method == 'POST':
+        producto = productos_dict[str(id_producto_general)]
+        nombre_producto = request.form['nombre_producto']
+        descripcion = request.form['descripcion']
+        precio = request.form['precio']
+        detalles = request.form['detalles']
+        cantidad = request.form['cantidad']
+        if request.form['activo']=='on':
+            activo_introducido=True
+        else:
+            activo_introducido=False
+        #consigue el id de la talla ingresada en el form
+        query_select = f'SELECT id_talla FROM talla WHERE talla = "{request.form["talla"]}";'
+        cursor_dict.execute(query_select)
+        lista_id_talla = cursor_dict.fetchall()
+        id_talla = lista_id_talla[0]["id_talla"]
+        #consigue el id del color ingresado en el form
+        query_select = f'SELECT id_color FROM color WHERE color = "{request.form["color"]}";'
+        cursor_dict.execute(query_select)
+        lista_id_color = cursor_dict.fetchall()
+        id_color = lista_id_color[0]['id_color']
+        #insertar registro en base de datos
+        query=f'INSERT INTO producto_especifico(id_producto_general,nombre,descripcion,precio,detalles,cantidad,activo,id_talla,id_color) VALUES ({id_producto_general},"{nombre_producto}","{descripcion}",{precio},"{detalles}",{cantidad},{activo_introducido},{id_talla},{id_color});'
+        cursor_dict.execute(query)
+        conexion.commit()
+        fotos = request.files.getlist('foto')
+        id_nuevo = cursor_dict.lastrowid
+        for foto in fotos:
+            foto_ruta = foto.filename
+            foto.save(os.path.join('static/img/',foto_ruta))
+            query=f'INSERT INTO imagenes_especificas (id_producto_especifico,imagen) VALUES({id_nuevo},"{foto_ruta}")'
+            cursor_dict.execute(query)
+            conexion.commit()
+        return render_template("agregar_subproducto.html",producto=producto, colores=colores, tallas=tallas)
+
+
+@app.route('/editar_producto/<id_producto_general>', methods=['GET','POST'])
+def editar_producto_general(id_producto_general):
+
+    return render_template("editar_producto_general.html")
 
 if __name__=='__main__':
     app.run(debug=True)
