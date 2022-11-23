@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, session, redirect, flash
 import mysql.connector
 import os
-from funciones import lista_a_dict
+from funciones import lista_a_dict, actualizar_diccionario
 
 
 app = Flask(__name__)
@@ -10,15 +10,16 @@ app.secret_key='234524assdg'
 conexion=mysql.connector.connect(user='admin',password='contrasenaAdmin',host='localhost',database='finkies')
 cursor=conexion.cursor()
 cursor_dict=conexion.cursor(dictionary=True)
-query='SELECT * FROM producto_general;'
 select_categorias='SELECT * FROM categoria_producto'
-cursor_dict.execute(query)
-productos=cursor_dict.fetchall()
-#diccionario de todos los productos generales
-productos_dict=lista_a_dict(productos,'id_producto_general')
+#diccionario todos los productos generales
+productos_dict=actualizar_diccionario(cursor_dict,'producto_general','id_producto_general')
 current_user=''
 cursor_dict.execute(select_categorias)
 categorias=cursor_dict.fetchall()
+#diccionario todos los productos especificos
+productos_especificos_dict=actualizar_diccionario(cursor_dict, 'producto_especifico', 'id_producto_especifico')
+#diccionario de todas las fotos
+fotos = actualizar_diccionario(cursor_dict, 'imagenes_especificas', 'id_imagen_especifica')
 #diccionario de todos las categorias
 categorias=lista_a_dict(categorias,'id_categoria')
 query = 'SELECT * FROM talla;'
@@ -119,6 +120,8 @@ def agregar_producto():
         query=f'INSERT INTO producto_general (nombre_general,descripcion_general,imagen,id_categoria,activo) VALUES ("{nombre_introducido}","{descripcion_introducido}","{foto_ruta}","{id_categoria}",{activo_introducido})'
         cursor_dict.execute(query)
         conexion.commit()
+        productos_dict=actualizar_diccionario(cursor_dict,'producto_general','id_producto_general')
+        print(productos_dict)
         return render_template('agregar_producto.html', mensaje='exito',categorias=categorias)
 
 
@@ -151,11 +154,14 @@ def logout():
 
 @app.route('/productos_generales',methods=['GET'])
 def productos_generales():
+    productos_dict=actualizar_diccionario(cursor_dict,'producto_general','id_producto_general')
     return render_template('productos_generales.html',productos=productos_dict,categorias=categorias)
 
 @app.route('/agregar_producto_especifico/<id_producto_general>', methods=['GET','POST'])
 def agregar_producto_especifico(id_producto_general):
+    productos_dict=actualizar_diccionario(cursor_dict,'producto_general','id_producto_general')
     if request.method == 'GET':
+        print(productos_dict)
         producto = productos_dict[str(id_producto_general)]
         return render_template("agregar_subproducto.html",producto=producto, colores=colores, tallas=tallas)
     if request.method == 'POST':
@@ -185,12 +191,14 @@ def agregar_producto_especifico(id_producto_general):
         conexion.commit()
         fotos = request.files.getlist('foto')
         id_nuevo = cursor_dict.lastrowid
+        #guardar fotos localmente y en la base de datos
         for foto in fotos:
             foto_ruta = foto.filename
             foto.save(os.path.join('static/img/',foto_ruta))
             query=f'INSERT INTO imagenes_especificas (id_producto_especifico,imagen) VALUES({id_nuevo},"{foto_ruta}")'
             cursor_dict.execute(query)
             conexion.commit()
+        productos_especificos_dict=actualizar_diccionario(cursor_dict, 'producto_especifico', 'id_producto_especifico')
         return render_template("agregar_subproducto.html",producto=producto, colores=colores, tallas=tallas)
 
 
