@@ -84,7 +84,8 @@ def index():
 
 @app.route('/shop')
 def tienda():
-    return render_template('shop.html')
+    productos_especificos_amostrar=actualizar_diccionario(cursor_dict, 'producto_especifico', 'id_producto_general')
+    return render_template('shop.html',productos=productos_dict,productos_especificos_amostrar=productos_especificos_amostrar)
 
 @app.route('/ver_ordenes',methods=['GET','POST'])
 def ordenes():
@@ -137,10 +138,15 @@ def pago():
 def contacto():
     return render_template('contact.html')
 
-@app.route('/producto/<id>')
-def producto(id):
-    producto=productos_dict[id]
+@app.route('/producto/<id_producto_general>')
+def producto(id_producto_general):
+    producto=productos_dict[id_producto_general]
     return render_template('producto.html', producto=producto)
+
+
+@app.route('/producto/<id_producto_general>/<id_producto_especifico>')
+def producto_especifico(id_producto_general,id_producto_especifico):
+    return True
 
 #@app.route('/agregarcarrito')
 #def agregarcarrito(id):
