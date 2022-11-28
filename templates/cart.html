@@ -252,111 +252,113 @@
                         </tr>
                     </thead>
                     <tbody class="align-middle">
-                        <tr>
+                        <tr id="row1">
                             <td class="align-middle"><img src="img/image0prueba.jpg" alt="" style="width: 50px;"> Aretes Modelo 01</td>
-                            <td class="align-middle">$100</td>
+                            <td id="precio1" class="align-middle">$100</td>
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" >
+                                        <button class="btn btn-sm btn-primary btn-minus" onclick="restarElemento('precio1','cantProducto1','totalProducto1')">
                                         <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary text-center" value="2">
+                                    <input id="cantProducto1" type="text" class="form-control form-control-sm bg-secondary text-center" value="2">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
+                                        <button class="btn btn-sm btn-primary btn-plus" onclick="sumarElemento('precio1','cantProducto1','totalProducto1')">
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
                             </td>
-                            <td class="align-middle">$200</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
+                            <td id="totalProducto1" class="align-middle total-fila">$200</td>
+                            <td class="align-middle"><button class="btn btn-sm btn-primary" onclick="eliminarElemento('row1')"><i class="fa fa-times"></i></button></td>
                         </tr>
-                        <tr>
+
+                        <tr id="row2">
                             <td class="align-middle"><img src="img/imagenqueseraproducto.jpeg" alt="" style="width: 50px;"> Sticker Personalizado</td>
-                            <td class="align-middle">$150</td>
+                            <td id="precio2" class="align-middle">$150</td>
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" >
+                                        <button class="btn btn-sm btn-primary btn-minus" onclick="restarElemento('precio2','cantProducto2','totalProducto2')">
                                         <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary text-center" value="1">
+                                    <input id="cantProducto2" type="text" class="form-control form-control-sm bg-secondary text-center" value="1">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
+                                        <button class="btn btn-sm btn-primary btn-plus" onclick="sumarElemento('precio2','cantProducto2','totalProducto2')">
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
                             </td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
+                            <td id="totalProducto2" class="align-middle total-fila">$150</td>
+                            <td class="align-middle"><button class="btn btn-sm btn-primary" onclick="eliminarElemento('row2')"><i class="fa fa-times"></i></button></td>
                         </tr>
-                        <tr>
+                        <tr id="row3">
                             <td class="align-middle"><img src="img/image2prueba.jpg" alt="" style="width: 50px;"> Collar Modelo 13</td>
-                            <td class="align-middle">$150</td>
+                            <td id="precio3" class="align-middle">$150</td>
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" >
+                                        <button class="btn btn-sm btn-primary btn-minus" onclick="restarElemento('precio3','cantProducto3','totalProducto3')">
                                         <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary text-center" value="1">
+                                    <input id="cantProducto3" type="text" class="form-control form-control-sm bg-secondary text-center" value="1">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
+                                        <button class="btn btn-sm btn-primary btn-plus" onclick="sumarElemento('precio3','cantProducto3','totalProducto3')">
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
                             </td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
+                            <td id="totalProducto3" class="align-middle total-fila">$150</td>
+                            <td class="align-middle"><button class="btn btn-sm btn-primary" onclick="eliminarElemento('row3')"><i class="fa fa-times"></i></button></td>
                         </tr>
-                        <tr>
+                        <tr id="row4">
                             <td class="align-middle"><img src="img/imagenqueseraproducto.jpeg" alt="" style="width: 50px;"> Pulsera Modelo 08</td>
-                            <td class="align-middle">$150</td>
+                            <td id="precio4" class="align-middle">$150</td>
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" onclick="restarElemento()">
+                                        <button class="btn btn-sm btn-primary btn-minus" onclick="restarElemento('precio4','cantProducto4','totalProducto4')">
                                         <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input id="elemento1" type="text" class="form-control form-control-sm bg-secondary text-center" value="1">
+                                    <input id="cantProducto4" type="text" class="form-control form-control-sm bg-secondary text-center" value="1">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus" onclick="sumarElemento()">
+                                        <button class="btn btn-sm btn-primary btn-plus" onclick="sumarElemento('precio4','cantProducto4','totalProducto4')">
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
                             </td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
+                            <td id="totalProducto4" class="align-middle total-fila">$150</td>
+                            <td class="align-middle"><button class="btn btn-sm btn-primary" onclick="eliminarElemento('row4')"><i class="fa fa-times"></i></button></td>
                         </tr>
-                        <tr>
+                        <tr id="row5">
                             <td class="align-middle"><img src="img/image0prueba.jpg" alt="" style="width: 50px;"> Playera Modelo 03</td>
-                            <td class="align-middle">$150</td>
+                            <td id="precio5" class="align-middle">$150</td>
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" >
+                                        <button class="btn btn-sm btn-primary btn-minus" onclick="restarElemento('precio5','cantProducto5','totalProducto5')">
                                         <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary text-center" value="1">
+                                    <input id="cantProducto5" type="text" class="form-control form-control-sm bg-secondary text-center" value="1">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus">
+                                        <button class="btn btn-sm btn-primary btn-plus" onclick="sumarElemento('precio5','cantProducto5','totalProducto5')">
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
                             </td>
-                            <td class="align-middle">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
+                            <td id="totalProducto5" class="align-middle total-fila">$150</td>
+                            <td class="align-middle"><button class="btn btn-sm btn-primary" onclick="eliminarElemento('row5')"><i class="fa fa-times"></i></button></td>
                         </tr>
+
                     </tbody>
                 </table>
             </div>
@@ -376,17 +378,17 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Subtotal</h6>
-                            <h6 class="font-weight-medium">$800</h6>
+                            <h6 id="subtotal" class="font-weight-medium">$800</h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Envío</h6>
-                            <h6 class="font-weight-medium">$0</h6>
+                            <h6 id="envio" class="font-weight-medium">$300</h6>
                         </div>
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold">$800</h5>
+                            <h5 id="total" class="font-weight-bold">$800</h5>
                         </div>
                         <button class="btn btn-block btn-primary my-3 py-3">Finalizar Pedido</button>
                     </div>
@@ -457,12 +459,97 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script>
-        function restarElemento(){
+        function eliminarElemento(pos){
+
+            document.getElementById(pos).remove();
+            updateTotalCarrito();
+        }
+        
+        function restarElemento(precio,cantProducto,totalProducto){
+            let value = parseInt(document.getElementById(cantProducto).value);
+
+            // 1.Lim de 1
+            if (value <= 1) return document.getElementById(cantProducto).value = 1;
+
+            // 2.Restamos el valor del input y lo mostranmos en pantalla
+            value = value - 1;
+            document.getElementById(cantProducto).value = value;
+
+            // 3.Multiplicar la cantidad * el precio y
+            // Mostrar el total del producto en esa fila
+            calcFilaTotal(precio,totalProducto,value);
+
+            updateTotalCarrito();
+        }
+
+        function sumarElemento(precio,cantProducto,totalProducto){
+            let value = parseInt(document.getElementById(cantProducto).value);
+
+            //Este if es para poner un limite en la cantidad de productos
+            //if (value >= 1000) return document.getElementById(cantProducto).value = 1000;
+
+            value = value + 1;
+            document.getElementById(cantProducto).value = value;
+
+            // 3.Multiplicar la cantidad * el precio y
+            // Mostrar el total del producto en esa fila
+            calcFilaTotal(precio,totalProducto,value);
+
+            updateTotalCarrito();
             
-            if (condition) {
-                
+        }
+
+        function calcFilaTotal(precio,totalProducto,value){
+            let price = document.getElementById(precio).innerHTML;
+
+            //se elimina el simbolo de dolar y lo parseamos a int
+            price = parseInt(price.replace(/[^0-9 ]/g, ''), 10);
+
+            price = value * price;
+
+            document.getElementById(totalProducto).textContent = "$"+price;
+        }
+
+        function updateTotalCarrito(){
+
+            // 4.Calcular subtotal y Mostrarlo
+            let subtotal = calcSubtotal();
+
+            // 5.Hacer una condicional si el subtotal es mayor a 3,000 el envio es gratis.
+            // Por defecto se cobrará 300 de envío
+            let envio = calcEnvio(subtotal);
+            document.getElementById("envio").innerHTML = "$"+envio;
+
+            // 6.Mostrar el total
+            let total = envio + subtotal;
+            document.getElementById("total").innerHTML = "$"+total;
+        }
+
+        function calcSubtotal(){
+            // Lo que hace esta funcion es sumar los totales de cada fila y lo mostrarlos en pantalla
+            let subtotal = document.getElementById("subtotal").innerHTML;
+            let filaTotales = document.getElementsByClassName('total-fila');
+            
+            subtotal = 0;
+
+            for (let i = 0; i < filaTotales.length; i++) {
+                var fila = parseInt(filaTotales[i].textContent.replace(/[^0-9 ]/g, ''));
+                subtotal = subtotal + fila;
+            }
+
+            document.getElementById("subtotal").innerHTML = "$"+subtotal;
+            return subtotal;
+
+        }
+
+        function calcEnvio(subtotal){
+            if (subtotal >= 3000) {
+                return 0;
+            }else{
+                return 300;
             }
         }
+
     </script>
 </body>
 

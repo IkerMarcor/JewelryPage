@@ -4,6 +4,20 @@ import mysql.connector
 import os
 from funciones import lista_a_dict, actualizar_diccionario, organizar_lista
 
+class orden:
+    idpedido: int
+    idproductos: list
+    cantidad: list
+    nombre: list
+    precio:list
+    imagen: list
+    def __init__(self, idpedido:int, idproductos:list,cantidad:list,nombre:list,precio:list,imagen:list):
+        self.idpedido=idpedido
+        self.idproductos=idproductos
+        self.cantidad=cantidad
+        self.nombre=nombre
+        self.precio=precio
+        self.imagen=imagen
 
 app = Flask(__name__)
 app.secret_key='234524assdg'
@@ -11,6 +25,7 @@ conexion=mysql.connector.connect(user='admin',password='contrasenaAdmin',host='l
 cursor=conexion.cursor()
 cursor_dict=conexion.cursor(dictionary=True)
 select_categorias='SELECT * FROM categoria_producto'
+idusuario='SELECT idusuario FROM usuarios LIMIT 1'
 #diccionario todos los productos generales
 productos_dict=actualizar_diccionario(cursor_dict,'producto_general','id_producto_general')
 current_user=''
@@ -32,7 +47,46 @@ cursor_dict.execute(query)
 colores = cursor_dict.fetchall()
 #diccionario de todos los colores
 colores = lista_a_dict(colores,'id_color')
-
+query='SELECT idpedidos FROM pedidos WHERE idusuario='+'1 GROUP BY idpedidos'
+cursor_dict.execute(query)
+ordenes=cursor_dict.fetchall()
+lista_ordenes=[]
+for ordenal in ordenes:
+    query='SELECT idproductos FROM pedidos WHERE idusuario='+'1 AND idpedidos= '+ str(ordenal['idpedidos'])
+    cursor_dict.execute(query)
+    ordenes_idproductos=cursor_dict.fetchall().copy()
+    lista_idproductos=[]
+    for idproducto in ordenes_idproductos:
+        lista_idproductos.append(idproducto['idproductos'])
+    query='SELECT cantidad FROM pedidos WHERE idusuario='+'1 AND idpedidos= '+ str(ordenal['idpedidos'])
+    cursor_dict.execute(query)
+    ordenes_cantidad=cursor_dict.fetchall().copy()
+    lista_cantidad=[]
+    for cantidad in ordenes_cantidad:
+        lista_cantidad.append(cantidad['cantidad'])
+    lista_cantidad=[int(x) for x in lista_cantidad]
+    query='SELECT nombre from pedidos INNER JOIN  producto_especifico as pg on pg.id_producto_especifico=idproductos WHERE idusuario='+'1 AND idpedidos= '+ str(ordenal['idpedidos'])
+    cursor_dict.execute(query)
+    ordenes_nombre_producto=cursor_dict.fetchall().copy()
+    lista_nombre=[]
+    for nombre in ordenes_nombre_producto:
+        lista_nombre.append(nombre['nombre'])
+    query='SELECT pg.precio from pedidos INNER JOIN  producto_especifico as pg on pg.id_producto_especifico=idproductos WHERE idusuario='+'1 AND idpedidos= '+ str(ordenal['idpedidos'])
+    cursor_dict.execute(query)
+    ordenes_nombre_producto=cursor_dict.fetchall().copy()
+    lista_precio=[]
+    for nombre in ordenes_nombre_producto:
+        lista_precio.append(nombre['precio'])
+    lista_precio=[float(x) for x in lista_precio]
+    query='SELECT imagen from pedidos INNER JOIN  producto_especifico as pg on pg.id_producto_especifico=idproductos INNER JOIN imagenes_especificas AS ie on pg.id_producto_especifico=ie.id_producto_especifico WHERE idusuario='+'1 AND idpedidos= '+ str(ordenal['idpedidos'])
+    query=query+ ' group by pg.id_producto_especifico;'
+    cursor_dict.execute(query)
+    ordenes_imagen_producto=cursor_dict.fetchall().copy()
+    lista_imagenes=[]
+    for imagenes in ordenes_imagen_producto:
+        lista_imagenes.append(imagenes['imagen'])
+    lista_ordenes.append(orden(ordenal['idpedidos'],lista_idproductos,lista_cantidad,lista_nombre,lista_precio,lista_imagenes))
+  #  diccionario_ordenes=lista_a_dict(lista_ordenes,ordenal['idpedidos'])
 
 @app.route('/',methods=['GET','POST'])
 def index():
@@ -88,16 +142,20 @@ def tienda():
     return render_template('shop.html',productos=productos_dict,productos_especificos_amostrar=productos_especificos_amostrar)
 
 @app.route('/ver_ordenes',methods=['GET','POST'])
-def ordenes():
+def ver_ordenes():
     if request.method=='GET':
-        idusuario=f'SELECT idusuarios FROM usuarios WHERE username="{current_user}";'
-        return render_template('ver_ordenes.html')#usuario_actual=idusuario
+        print('hola')
+        print(ordenal['idpedidos'])
+        return render_template('ver_ordenes.html',lista_ordenes=lista_ordenes)#usuario_actual=idusuario
 
-@app.route('/ver_orden',methods=['GET','POST'])
-def orden():
+@app.route('/ver_orden/<idpedido>',methods=['GET','POST'])
+def ver_orden(idpedido):
     if request.method=='GET':
+        for objeto in lista_ordenes:
+            if idpedido==objeto.idpedido:
+                pedido=objeto
         idusuario=f'SELECT idusuarios FROM usuarios WHERE username="{current_user}";'
-        return render_template('ver_orden.html')#usuario_actual=idusuario
+        return render_template('ver_orden.html',pedido=pedido)
     
 
 @app.route('/agregar_producto', methods=['GET','POST'])
