@@ -1,3 +1,4 @@
+
 def lista_a_dict(lista:list,llave:str):
     diccionario_bonito = dict()
     for diccionario in lista:
@@ -12,9 +13,4 @@ def actualizar_diccionario(cursor_dict,tabla:str,llave:str):
     productos_dict=lista_a_dict(productos,llave)
     return productos_dict
 
-def limpiar_string(cuerda:str) -> str:
-    remplazador='abcdefghijklmnñopqrstuvwxyz}{][ ,)(\'\"'
-    for remplazado in remplazador:
-        cuerda.replace(remplazado,'')
-        print(cuerda)
-    return cuerda
+
