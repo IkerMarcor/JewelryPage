@@ -235,75 +235,22 @@
                                 <div class="input-group">
                                 </div>
                             </form>
-                            <div class="dropdown ml-4">
-                                <button class="btn border dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                            Ordenar por
-                                        </button>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
-                                    <a class="dropdown-item" href="#">3 meses</a>
-                                    <a class="dropdown-item" href="#">6 meses</a>
-                                    <a class="dropdown-item" href="#">12 meses</a>
-                                </div>
-                            </div>
                         </div>
-                    </div>
-                    
+                    </div>   
             <lu class="list-group" data="2"> 
-                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex w-100 justify-content-between">
-                      <h5 class="mb-1">ORDEN 63 (ESTO SE VA A ITERAR EN LA DB)</h5>
-                    </div>
-                    <p class="mb-1">DÍA DE PEDIDO.</p>
-                    <p class="mb-1">TOTAL DE PEDIDO.</p>
-                    <a href="/ver_orden" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Ver detalles</a>
-                  </a>
-                  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex w-100 justify-content-between">
-                      <h5 class="mb-1">ORDEN 63 (ESTO SE VA A ITERAR EN LA DB)</h5>
-                    </div>
-                    <p class="mb-1">DÍA DE PEDIDO.</p>
-                    <p class="mb-1">TOTAL DE PEDIDO.</p>
-                    <a href="/ver_orden" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Ver detalles</a>
-                  </a>
-                  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex w-100 justify-content-between">
-                      <h5 class="mb-1">ORDEN 63 (ESTO SE VA A ITERAR EN LA DB)</h5>
-                    </div>
-                    <p class="mb-1">DÍA DE PEDIDO.</p>
-                    <p class="mb-1">TOTAL DE PEDIDO.</p>
-                    <a href="/ver_orden" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Ver detalles</a>
-                  </a>
-                  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex w-100 justify-content-between">
-                      <h5 class="mb-1">ORDEN 63 (ESTO SE VA A ITERAR EN LA DB)</h5>
-                    </div>
-                    <p class="mb-1">DÍA DE PEDIDO.</p>
-                    <p class="mb-1">TOTAL DE PEDIDO.</p>
-                    <a href="/ver_orden" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Ver detalles</a>
-                  </a>
+                {% for orden in lista_ordenes %}
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">ORDEN {{orden['idpedido']}}</h5>
+                        </div>
+                        {% for imagen in orden['imagen'] %}
+                        <img class="img-fluid w-100 similar" src="static/img/{{imagen}}" alt="/index">
+                        {% endfor %}
+                        <a href="/ver_orden{{orden['idpedido']}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Ver detalles</a>
+                    </a>
+                {% endfor %}
             </lu> 
-                    <div class="col-12 pb-1">
-                        <nav aria-label="Page navigation">
-                          <ul class="pagination justify-content-center mb-3">
-                            <li class="page-item disabled">
-                              <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                              </a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                              <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                              </a>
-                            </li>
-                          </ul>
-                        </nav>
-                    </div>
+                    
                 </div>
             </div>
             <!-- ordenes list End -->
