@@ -150,10 +150,16 @@ def ver_ordenes():
 
 @app.route('/ver_orden/<idpedido>',methods=['GET','POST'])
 def ver_orden(idpedido):
+    pedido=orden
     if request.method=='GET':
         for objeto in lista_ordenes:
-            if idpedido==objeto.idpedido:
+            print(objeto.idpedido)
+            print(idpedido)
+            if int(idpedido)==objeto.idpedido:
                 pedido=objeto
+        print('hola')
+        print(pedido) #oki El idpedido es una variable pero todo lo demás pues son listas
+        
         idusuario=f'SELECT idusuarios FROM usuarios WHERE username="{current_user}";'
         return render_template('ver_orden.html',pedido=pedido)
     
