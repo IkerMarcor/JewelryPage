@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, session, redirect, flash
 import mysql.connector
 import os
-from funciones import lista_a_dict, actualizar_diccionario
+from funciones import lista_a_dict, actualizar_diccionario, organizar_lista
 
 class orden:
     idpedido: int
@@ -192,7 +192,7 @@ def agregar_producto():
 
 @app.route('/cart')
 def carrito():
-    return render_template('cart.html')
+    return redirect('/')
 
 @app.route('/checkout')
 def pago():
@@ -210,7 +210,15 @@ def producto(id_producto_general):
 
 @app.route('/producto/<id_producto_general>/<id_producto_especifico>')
 def producto_especifico(id_producto_general,id_producto_especifico):
-    return True
+    productos_especificos_dict=actualizar_diccionario(cursor_dict, 'producto_especifico', 'id_producto_especifico')
+    producto_especifico=productos_especificos_dict[id_producto_especifico]
+    query = f"SELECT imagen FROM imagenes_especificas WHERE id_producto_especifico = {id_producto_especifico};"
+    lista_fotos = organizar_lista(cursor_dict,query,'imagen')
+    lista_tallas = actualizar_diccionario(cursor_dict,'talla','id_talla')
+    lista_colores = actualizar_diccionario(cursor_dict,'color','id_color')
+    print(lista_tallas)
+    print(producto_especifico['id_talla'])
+    return render_template('producto.html',producto=producto_especifico, fotos=lista_fotos,tallas=lista_tallas, colores=lista_colores)
 
 #@app.route('/agregarcarrito')
 #def agregarcarrito(id):
