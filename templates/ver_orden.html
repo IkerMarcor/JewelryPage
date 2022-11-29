@@ -1,84 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% block title %}Finkies{% endblock %}
+{% block head %}
+{{super()}}
+{% endblock %}
+{% block body %}
 
-<head>
-    <meta charset="utf-8">
-    <title>Finkies</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
-
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
-
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
-
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="/static/css/style.css" rel="stylesheet">
-</head>
-
+{% if session['datos_erroneos'] == True %}
+<body onload="document.getElementById('botonlogin').click()">
+{% else %}
 <body>
-    <!-- Topbar Start -->
-    <div class="container-fluid">
-        <div class="row bg-secondary py-2 px-xl-5">
-            <div class="col-lg-6 d-none d-lg-block">
-                <div class="d-inline-flex align-items-center">
-                    <a class="text-dark" href="">FAQs</a>
-                    <span class="text-muted px-2">|</span>
-                    <a class="text-dark" href="">Ayuda</a>
-                    <span class="text-muted px-2">|</span>
-                    <a class="text-dark" href="">Soporte</a>
-                </div>
-            </div>
-            <div class="col-lg-6 text-center text-lg-right">
-                <div class="d-inline-flex align-items-center">
-                    <a class="text-dark px-2" href="https://www.instagram.com/finkiesearrings/" target="_blank">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="row align-items-center py-3 px-xl-5">
-            <div class="col-lg-3 d-none d-lg-block">
-                <a href="/" class="text-decoration-none">
-                    <h1 class="m-0 display-5 font-weight-semi-bold titulo-logo"><span class="text-primary font-weight-bold "><img src="img\LOGO.jpg" rel="icon" height="110" style="padding-left: 25px; padding-right: 25px;"></span>Finkies</h1>
-                </a>
-            </div>
-            <div class="col-lg-6 col-6 text-left">
-                <form action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Busque un producto...">
-                        <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
-                                <i class="fa fa-search"></i>
-                            </span>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="col-lg-3 col-6 text-right">
-                <a href="" class="btn border">
-                    <i class="fas fa-heart text-primary"></i>
-                    <span class="badge">0</span>
-                </a>
-                <a href="" class="btn border">
-                    <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge">0</span>
-                </a>
-            </div>
-        </div>
-    </div>
-    <!-- Topbar End -->
-
-
+{% endif %}
     <!-- Navbar Start -->
     <div class="container-fluid mb-5">
         <div class="row border-top px-xl-5">
@@ -235,17 +166,7 @@
                                 <div class="input-group">
                                 </div>
                             </form>
-                            <div class="dropdown ml-4">
-                                <button class="btn border dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                            Ordenar por
-                                        </button>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
-                                    <a class="dropdown-item" href="#">3 meses</a>
-                                    <a class="dropdown-item" href="#">6 meses</a>
-                                    <a class="dropdown-item" href="#">12 meses</a>
-                                </div>
-                            </div>
+                           
                         </div>
                     </div>
                     
@@ -255,7 +176,6 @@
                       <h5 class="mb-1">ORDEN #{{pedido['idpedido']}}</h5>
                     </div>
                     <p class="mb-1">DÍA DE PEDIDO.</p>
-                    <p class="mb-1">MÉTODO DE PAGO.</p>
                     <p class="mb-1">TOTAL: {{total}}.</p>
                     </a>
                     
@@ -266,65 +186,10 @@
                     <p class="mb-1">CANTIDAD {{pedido['cantidad'][loop.index0]}}.</p>
                     <img class="img-fluid w-100 similar" src="../static/img/{{pedido['imagen'][loop.index0]}}" alt="/index">
                     <p class="mb-1">TOTAL DEL PRODUCTO {{pedido['precio'][loop.index0]*pedido['cantidad'][loop.index0]}}.</p>
-                    <p href="/producto" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Ver detalles
-                    </p>
+                    <a href="/producto/{{pedido['idgeneral'][loop.index0]}}/{{pedido['idproductos'][loop.index0]}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Ver detalles
+                    </a>
                     {%endfor%}
-                    
-                    <h5 class="mb-1">HOLA {{i}}</h5>
-                    <p class="mb-1">DESCRIPCIÓN.</p>
-                    <p class="mb-1">PRECIO.</p>
-                    <p class="mb-1">TOTAL DE PEDIDO 1.</p>
-                    <p href="/producto" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Ver detalles
-                    </p>
-                    
-                    <h5 class="mb-1">PRODUCTO X</h5>
-                    <p class="mb-1">DESCRIPCIÓN.</p>
-                    <p class="mb-1">PRECIO.</p>
-                    <p class="mb-1">TOTAL DE PEDIDO 1.</p>
-                    <p href="/producto" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Ver detalles
-                    </p>
-                    <h5 class="mb-1">PRODUCTO X</h5>
-                    <p class="mb-1">DESCRIPCIÓN.</p>
-                    <p class="mb-1">PRECIO.</p>
-                    <p class="mb-1">TOTAL DE PEDIDO.</p>
-                    <p href="/producto" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Ver detalles</a>
-                    </p>
-                    <h5 class="mb-1">PRODUCTO X</h5>
-                    <p class="mb-1">DESCRIPCIÓN.</p>
-                    <p class="mb-1">PRECIO.</p>
-                    <p class="mb-1">TOTAL DE PEDIDO.</p>
-                    <p href="/producto" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Ver detalles</a>
-                    </p>
-                  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex w-100 justify-content-between">
-                      <h5 class="mb-1">ORDEN 63 (ESTO SE VA A ITERAR EN LA DB)</h5>
-                    </div>
-                    <p class="mb-1">DÍA DE PEDIDO.</p>
-                    <p class="mb-1">TOTAL DE PEDIDO.</p>
-                    <a href="/ver_orden.html" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Ver detalles</a>
-                  </a>
             </lu> 
-                    <div class="col-12 pb-1">
-                        <nav aria-label="Page navigation">
-                          <ul class="pagination justify-content-center mb-3">
-                            <li class="page-item disabled">
-                              <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                              </a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                              <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                              </a>
-                            </li>
-                          </ul>
-                        </nav>
-                    </div>
                 </div>
             </div>
             <!-- ordenes list End -->
@@ -333,47 +198,6 @@
     <!-- ordenes End -->
 
 
-    <!-- Footer Start -->
-    <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
-        <div class="row px-xl-5 pt-5">
-            <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-                <a href="/" class="text-decoration-none">
-                    <h1 class="mb-4 display-5 font-weight-semi-bold titulo-logo"><span class="text-primary font-weight-bold border"><img src="img/LOGO.jpg" height="110" alt="" style="padding-left: 25px; padding-right: 25px;"></span>Finkies</h1>
-                </a>
-                <p>🧚🏼 aretitos cool para gente cool 🧚🏼</p>
-                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>direccion</p>
-                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>correo</p>
-                <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>insertar numero telefonico</p>
-            </div>
-            <div class="col-lg-8 col-md-12">
-                <div class="row">
-                    <div class="col-md-4 mb-5">
-                        <h5 class="font-weight-bold text-dark mb-4">Atajos</h5>
-                        <div class="d-flex flex-column justify-content-start">
-                            <a class="text-dark mb-2" href="/"><i class="fa fa-angle-right mr-2"></i>Inicio</a>
-                            <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Carrito de compras</a>
-                            <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Pago</a>
-                            <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contáctanos</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row border-top border-light mx-xl-5 py-4">
-            <div class="col-md-6 px-xl-0">
-                <p class="mb-md-0 text-center text-md-left text-dark">
-                    &copy; <a class="text-dark font-weight-semi-bold" href="#">Finkies</a>. Todos los derechos reservados. Diseñado
-                    por
-                    <a class="text-dark font-weight-semi-bold" href="https://htmlcodex.com">HTML Codex</a><br>
-                    Distribuido por <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
-                </p>
-            </div>
-            <div class="col-md-6 px-xl-0 text-center text-md-right">
-                <img class="img-fluid" src="img/payments.png" alt="">
-            </div>
-        </div>
-    </div>
-    <!-- Footer End -->
 
 
     <!-- Back to Top -->
@@ -393,5 +217,8 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 </body>
-
+{% endblock %}
+{% block footer %}
+{{super()}}
+{% endblock %}
 </html>
