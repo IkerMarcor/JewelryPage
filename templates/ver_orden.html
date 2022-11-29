@@ -252,11 +252,11 @@
             <lu class="list-group"> 
                 <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-between">
-                      <h5 class="mb-1">{{pedido['idpedido']}}</h5>
+                      <h5 class="mb-1">ORDEN #{{pedido['idpedido']}}</h5>
                     </div>
                     <p class="mb-1">DÍA DE PEDIDO.</p>
                     <p class="mb-1">MÉTODO DE PAGO.</p>
-                    <p class="mb-1">TOTAL DE PEDIDO.</p>
+                    <p class="mb-1">TOTAL: {{total}}.</p>
                     </a>
                     
 
@@ -265,7 +265,7 @@
                     <p class="mb-1">PRECIO UNITARIO {{pedido['precio'][loop.index0]}}.</p>
                     <p class="mb-1">CANTIDAD {{pedido['cantidad'][loop.index0]}}.</p>
                     <img class="img-fluid w-100 similar" src="../static/img/{{pedido['imagen'][loop.index0]}}" alt="/index">
-                    <p class="mb-1">EL TOTAL LUEGO LO ARREGLO.</p>
+                    <p class="mb-1">TOTAL DEL PRODUCTO {{pedido['precio'][loop.index0]*pedido['cantidad'][loop.index0]}}.</p>
                     <p href="/producto" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Ver detalles
                     </p>
                     {%endfor%}

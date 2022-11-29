@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, session, redirect, flash
 import mysql.connector
 import os
-from funciones import lista_a_dict, actualizar_diccionario, organizar_lista
+from funciones import lista_a_dict, actualizar_diccionario, organizar_lista,sumar_cantidad
 
 class orden:
     idpedido: int
@@ -153,15 +153,13 @@ def ver_orden(idpedido):
     pedido=orden
     if request.method=='GET':
         for objeto in lista_ordenes:
-            print(objeto.idpedido)
-            print(idpedido)
             if int(idpedido)==objeto.idpedido:
                 pedido=objeto
-        print('hola')
-        print(pedido) #oki El idpedido es una variable pero todo lo demás pues son listas
         
+        total=sumar_cantidad(pedido.precio,pedido.cantidad)
+        print(total)
         idusuario=f'SELECT idusuarios FROM usuarios WHERE username="{current_user}";'
-        return render_template('ver_orden.html',pedido=pedido)
+        return render_template('ver_orden.html',pedido=pedido,total=total)
     
 
 @app.route('/agregar_producto', methods=['GET','POST'])
