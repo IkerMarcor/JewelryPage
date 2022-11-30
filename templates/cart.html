@@ -1,84 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <title>Finkies</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
-
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
-
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
-
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="/static/css/style.css" rel="stylesheet">
-</head>
-
-<body>
-    <!-- Topbar Start -->
-    <div class="container-fluid">
-        <div class="row bg-secondary py-2 px-xl-5">
-            <div class="col-lg-6 d-none d-lg-block">
-                <div class="d-inline-flex align-items-center">
-                    <a class="text-dark" href="">FAQs</a>
-                    <span class="text-muted px-2">|</span>
-                    <a class="text-dark" href="">Ayuda</a>
-                    <span class="text-muted px-2">|</span>
-                    <a class="text-dark" href="">Soporte</a>
-                </div>
-            </div>
-            <div class="col-lg-6 text-center text-lg-right">
-                <div class="d-inline-flex align-items-center">
-                    <a class="text-dark px-2" href="https://www.instagram.com/finkiesearrings/" target="_blank">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="row align-items-center py-3 px-xl-5">
-            <div class="col-lg-3 d-none d-lg-block">
-                <a href="/" class="text-decoration-none">
-                    <h1 class="m-0 display-5 font-weight-semi-bold titulo-logo"><span class="text-primary font-weight-bold "><img src="img\LOGO.jpg" rel="icon" height="110" style="padding-left: 25px; padding-right: 25px;"></span>Finkies</h1>
-                </a>
-            </div>
-            <div class="col-lg-6 col-6 text-left">
-                <form action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Busque un producto...">
-                        <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
-                                <i class="fa fa-search"></i>
-                            </span>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="col-lg-3 col-6 text-right">
-                <a href="" class="btn border">
-                    <i class="fas fa-heart text-primary"></i>
-                    <span class="badge">0</span>
-                </a>
-                <a href="" class="btn border">
-                    <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge">0</span>
-                </a>
-            </div>
-        </div>
-    </div>
-    <!-- Topbar End -->
-
-
+{% extends "base.html" %}
+{% block title %}Finkies{% endblock %}
+{% block head %}
+{{super()}}
+{% endblock %}
+{% block body %}
     <!-- Navbar Start -->
     <div class="container-fluid mb-5">
         <div class="row border-top px-xl-5">
@@ -108,10 +33,10 @@
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
                             <a href="/" class="nav-item nav-link">Inicio</a>
-                            <a href="shop.html" class="nav-item nav-link">Productos</a>
-                            <a href="cart.html" class="nav-item nav-link">Carrito de compras</a>
-                            <a href="checkout.html" class="nav-item nav-link">Pago</a>
-                            <a href="contact.html" class="nav-item nav-link">Contacto</a>
+                            <a href="/shop" class="nav-item nav-link">Productos</a>
+                            <a href="/cart" class="nav-item nav-link">Carrito de compras</a>
+                            <a href="/checkout" class="nav-item nav-link">Pago</a>
+                            <a href="/contact" class="nav-item nav-link">Contacto</a>
                         </div>
                         <div class="navbar-nav ml-2 py-0">
                             <!--Login empieza-->
@@ -228,7 +153,7 @@
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
             <h1 class="font-weight-semi-bold text-uppercase mb-3">Carrito de Compras</h1>
             <div class="d-inline-flex">
-                <p class="m-0"><a href="//">Home</a></p>
+                <p class="m-0"><a href="/">Home</a></p>
                 <p class="m-0 px-2">-</p>
                 <p class="m-0">Carrito De Compras</p>
             </div>
@@ -252,125 +177,38 @@
                         </tr>
                     </thead>
                     <tbody class="align-middle">
-                        <tr id="row1">
-                            <td class="align-middle"><img src="img/image0prueba.jpg" alt="" style="width: 50px;"> Aretes Modelo 01</td>
-                            <td id="precio1" class="align-middle">$100</td>
+                        {% set lista_precios = [] %}
+                        {% for id_producto,producto in carrito.items() %}
+                        <input type="text" hidden id="idproducto{{loop.index}}" name="idproducto{{loop.index}}" value="{{producto['id_producto_especifico']}}">
+                            {{ lista_precios.append(producto['precio']|float) }}
+                        <tr id="row{{loop.index}}">
+                            <td class="align-middle">{{producto['nombre']}}</td>
+                            <td id="precio{{loop.index}}" class="align-middle">{{producto['precio']}}</td>
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" onclick="restarElemento('precio1','cantProducto1','totalProducto1')">
+                                        <button class="btn btn-sm btn-primary btn-minus" onclick="restarElemento('idproducto{{loop.index}}','precio{{loop.index}}','cantProducto{{loop.index}}','totalProducto{{loop.index}}');">
                                         <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input id="cantProducto1" type="text" class="form-control form-control-sm bg-secondary text-center" value="2">
+                                    <input id="cantProducto{{loop.index}}" type="text" class="form-control form-control-sm bg-secondary text-center" value="{{producto['cantidad']}}" readonly="true">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus" onclick="sumarElemento('precio1','cantProducto1','totalProducto1')">
+                                        <button class="btn btn-sm btn-primary btn-plus" onclick="sumarElemento('idproducto{{loop.index}}','precio{{loop.index}}','cantProducto{{loop.index}}','totalProducto{{loop.index}}');">
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
                             </td>
-                            <td id="totalProducto1" class="align-middle total-fila">$200</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-primary" onclick="eliminarElemento('row1')"><i class="fa fa-times"></i></button></td>
+                            {% set total= producto['precio']|float * producto['cantidad']|float %}
+                            <td id="totalProducto{{loop.index}}" class="align-middle total-fila">${{"%.2f"|format(total)}}</td>
+                            <td class="align-middle"><button class="btn btn-sm btn-primary" onclick="eliminarElemento('row{{loop.index}}','{{loop.index}}');"><i class="fa fa-times"></i></button></td>
+                            
                         </tr>
-
-                        <tr id="row2">
-                            <td class="align-middle"><img src="img/imagenqueseraproducto.jpeg" alt="" style="width: 50px;"> Sticker Personalizado</td>
-                            <td id="precio2" class="align-middle">$150</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" onclick="restarElemento('precio2','cantProducto2','totalProducto2')">
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input id="cantProducto2" type="text" class="form-control form-control-sm bg-secondary text-center" value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus" onclick="sumarElemento('precio2','cantProducto2','totalProducto2')">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td id="totalProducto2" class="align-middle total-fila">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-primary" onclick="eliminarElemento('row2')"><i class="fa fa-times"></i></button></td>
-                        </tr>
-                        <tr id="row3">
-                            <td class="align-middle"><img src="img/image2prueba.jpg" alt="" style="width: 50px;"> Collar Modelo 13</td>
-                            <td id="precio3" class="align-middle">$150</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" onclick="restarElemento('precio3','cantProducto3','totalProducto3')">
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input id="cantProducto3" type="text" class="form-control form-control-sm bg-secondary text-center" value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus" onclick="sumarElemento('precio3','cantProducto3','totalProducto3')">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td id="totalProducto3" class="align-middle total-fila">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-primary" onclick="eliminarElemento('row3')"><i class="fa fa-times"></i></button></td>
-                        </tr>
-                        <tr id="row4">
-                            <td class="align-middle"><img src="img/imagenqueseraproducto.jpeg" alt="" style="width: 50px;"> Pulsera Modelo 08</td>
-                            <td id="precio4" class="align-middle">$150</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" onclick="restarElemento('precio4','cantProducto4','totalProducto4')">
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input id="cantProducto4" type="text" class="form-control form-control-sm bg-secondary text-center" value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus" onclick="sumarElemento('precio4','cantProducto4','totalProducto4')">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td id="totalProducto4" class="align-middle total-fila">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-primary" onclick="eliminarElemento('row4')"><i class="fa fa-times"></i></button></td>
-                        </tr>
-                        <tr id="row5">
-                            <td class="align-middle"><img src="img/image0prueba.jpg" alt="" style="width: 50px;"> Playera Modelo 03</td>
-                            <td id="precio5" class="align-middle">$150</td>
-                            <td class="align-middle">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" onclick="restarElemento('precio5','cantProducto5','totalProducto5')">
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input id="cantProducto5" type="text" class="form-control form-control-sm bg-secondary text-center" value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-plus" onclick="sumarElemento('precio5','cantProducto5','totalProducto5')">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td id="totalProducto5" class="align-middle total-fila">$150</td>
-                            <td class="align-middle"><button class="btn btn-sm btn-primary" onclick="eliminarElemento('row5')"><i class="fa fa-times"></i></button></td>
-                        </tr>
-
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
             <div class="col-lg-4">
-                <form class="mb-5" action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control p-4" placeholder="Código De Descuento">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary">Aplicar Descuento</button>
-                        </div>
-                    </div>
-                </form>
                 <div class="card border-secondary mb-5">
                     <div class="card-header bg-secondary border-0">
                         <h4 class="font-weight-semi-bold m-0">Total de carrito</h4>
@@ -378,7 +216,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Subtotal</h6>
-                            <h6 id="subtotal" class="font-weight-medium">$800</h6>
+                            <h6 id="subtotal" class="font-weight-medium">${{"%.2f"|format(lista_precios|sum)}}</h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Envío</h6>
@@ -388,85 +226,59 @@
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Total</h5>
-                            <h5 id="total" class="font-weight-bold">$800</h5>
+                            {% set grand_total="%.2f"|format((lista_precios|sum)+300)%}
+                            <h5 id="total" class="font-weight-bold">${{grand_total}}</h5>
                         </div>
-                        <button class="btn btn-block btn-primary my-3 py-3">Finalizar Pedido</button>
+                        <button class="btn btn-block btn-primary my-3 py-3" onclick="location.href='/checkout'">Finalizar Pedido</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- Cart End -->
-
-
-    <!-- Footer Start -->
-    <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
-        <div class="row px-xl-5 pt-5">
-            <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-                <a href="/" class="text-decoration-none">
-                    <h1 class="mb-4 display-5 font-weight-semi-bold titulo-logo"><span class="text-primary font-weight-bold border"><img src="img/LOGO.jpg" height="110" alt="" style="padding-left: 25px; padding-right: 25px;"></span>Finkies</h1>
-                </a>
-                <p>🧚🏼 aretitos cool para gente cool 🧚🏼</p>
-                <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>direccion</p>
-                <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>correo</p>
-                <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>insertar numero telefonico</p>
-            </div>
-            <div class="col-lg-8 col-md-12">
-                <div class="row">
-                    <div class="col-md-4 mb-5">
-                        <h5 class="font-weight-bold text-dark mb-4">Atajos</h5>
-                        <div class="d-flex flex-column justify-content-start">
-                            <a class="text-dark mb-2" href="/"><i class="fa fa-angle-right mr-2"></i>Inicio</a>
-                            <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Carrito de compras</a>
-                            <a class="text-dark mb-2" href="checkout.html"><i class="fa fa-angle-right mr-2"></i>Pago</a>
-                            <a class="text-dark" href="contact.html"><i class="fa fa-angle-right mr-2"></i>Contáctanos</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row border-top border-light mx-xl-5 py-4">
-            <div class="col-md-6 px-xl-0">
-                <p class="mb-md-0 text-center text-md-left text-dark">
-                    &copy; <a class="text-dark font-weight-semi-bold" href="#">Finkies</a>. Todos los derechos reservados. Diseñado
-                    por
-                    <a class="text-dark font-weight-semi-bold" href="https://htmlcodex.com">HTML Codex</a><br>
-                    Distribuido por <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
-                </p>
-            </div>
-            <div class="col-md-6 px-xl-0 text-center text-md-right">
-                <img class="img-fluid" src="img/payments.png" alt="">
-            </div>
-        </div>
-    </div>
-    <!-- Footer End -->
-
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
-
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
-    <!-- Contact Javascript File -->
-    <script src="mail/jqBootstrapValidation.min.js"></script>
-    <script src="mail/contact.js"></script>
-
-    <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+    {% endblock %}
+    {% block footer %}
+    {{super()}}
     <script>
-        function eliminarElemento(pos){
 
+        
+        function actualizarCarritoDict(idproducto,cantidadprod,tipo){
+            let id_producto = document.getElementById(idproducto).value;
+            let cantidad = document.getElementById(cantidadprod).value
+
+            let informacion=[
+                {"id_producto":id_producto},
+                {"cantidad":cantidad},
+                //tipo determina si se va actualizar la cantidad o si se borrara el registro
+                {"tipo":tipo}
+            ];
+
+            $.ajax({
+                type: "POST",
+                url: "/actualizar_carritodict",
+                data: JSON.stringify(informacion),
+                contentType: "application/json",
+                dataType: 'json',
+                success: function(result) {
+                console.log("Result:");
+                console.log(result);
+                 }  
+                });
+        }
+
+        function eliminarElemento(pos,idproducto){
+            let string="idproducto";
+            let id_producto=string.concat(idproducto);
+            let string2="cantProducto";
+            let cantidad=string2.concat(idproducto)
+            actualizarCarritoDict(id_producto,cantidad,'borrar')
             document.getElementById(pos).remove();
             updateTotalCarrito();
+            
         }
         
-        function restarElemento(precio,cantProducto,totalProducto){
-            let value = parseInt(document.getElementById(cantProducto).value);
+        function restarElemento(idproducto,precio,cantProducto,totalProducto){
+            let value = parseFloat(document.getElementById(cantProducto).value);
 
             // 1.Lim de 1
             if (value <= 1) return document.getElementById(cantProducto).value = 1;
@@ -480,10 +292,11 @@
             calcFilaTotal(precio,totalProducto,value);
 
             updateTotalCarrito();
+            actualizarCarritoDict(idproducto,cantProducto,'actualizar');
         }
 
-        function sumarElemento(precio,cantProducto,totalProducto){
-            let value = parseInt(document.getElementById(cantProducto).value);
+        function sumarElemento(idproducto,precio,cantProducto,totalProducto){
+            let value = parseFloat(document.getElementById(cantProducto).value);
 
             //Este if es para poner un limite en la cantidad de productos
             //if (value >= 1000) return document.getElementById(cantProducto).value = 1000;
@@ -496,6 +309,7 @@
             calcFilaTotal(precio,totalProducto,value);
 
             updateTotalCarrito();
+            actualizarCarritoDict(idproducto,cantProducto,'actualizar');
             
         }
 
@@ -503,11 +317,10 @@
             let price = document.getElementById(precio).innerHTML;
 
             //se elimina el simbolo de dolar y lo parseamos a int
-            price = parseInt(price.replace(/[^0-9 ]/g, ''), 10);
-
+            price = parseFloat(price.replace(/[^0-9. ]/g, ''), 10);
             price = value * price;
 
-            document.getElementById(totalProducto).textContent = "$"+price;
+            document.getElementById(totalProducto).textContent = "$"+price.toFixed(2);
         }
 
         function updateTotalCarrito(){
@@ -522,7 +335,7 @@
 
             // 6.Mostrar el total
             let total = envio + subtotal;
-            document.getElementById("total").innerHTML = "$"+total;
+            document.getElementById("total").innerHTML = "$"+total.toFixed(2);
         }
 
         function calcSubtotal(){
@@ -533,11 +346,11 @@
             subtotal = 0;
 
             for (let i = 0; i < filaTotales.length; i++) {
-                var fila = parseInt(filaTotales[i].textContent.replace(/[^0-9 ]/g, ''));
+                var fila = parseFloat(filaTotales[i].textContent.replace(/[^0-9. ]/g, ''));
                 subtotal = subtotal + fila;
             }
 
-            document.getElementById("subtotal").innerHTML = "$"+subtotal;
+            document.getElementById("subtotal").innerHTML = "$"+subtotal.toFixed(2);
             return subtotal;
 
         }
@@ -550,7 +363,8 @@
             }
         }
 
-    </script>
-</body>
 
-</html>
+
+        
+    </script>
+    {% endblock %}

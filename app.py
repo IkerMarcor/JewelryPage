@@ -1,5 +1,5 @@
 #todo en español
-from flask import Flask, render_template, request, session, redirect, flash
+from flask import Flask, render_template, request, session, redirect, flash, jsonify
 import mysql.connector
 import os
 from funciones import lista_a_dict, actualizar_diccionario, orden, organizar_lista,sumar_cantidad,listar_ordenes
@@ -34,7 +34,7 @@ colores = cursor_dict.fetchall()
 #diccionario de todos los colores
 colores = lista_a_dict(colores,'id_color')
   #  diccionario_ordenes=lista_a_dict(lista_ordenes,ordenal['idpedidos'])
-
+carrito_dicc = {}
 @app.route('/',methods=['GET','POST'])
 def index():
     if request.method=='GET':
@@ -87,6 +87,7 @@ def index():
 
 @app.route('/shop')
 def tienda():
+    productos_dict=actualizar_diccionario(cursor_dict, 'producto_general', 'id_producto_general')
     productos_especificos_amostrar=actualizar_diccionario(cursor_dict, 'producto_especifico', 'id_producto_general')
     return render_template('shop.html',productos=productos_dict,productos_especificos_amostrar=productos_especificos_amostrar)
 
@@ -143,7 +144,24 @@ def agregar_producto():
 
 @app.route('/cart')
 def carrito():
-    return redirect('/')
+    return render_template('cart.html',carrito=carrito_dicc)
+
+@app.route('/actualizar_carritodict',methods=['GET','POST'])
+def actualizar_carritodict():
+    if request.method == "POST":
+        datos_actualizados = request.get_json()
+        print(datos_actualizados)
+        id_producto=datos_actualizados[0]['id_producto']
+        cantidad=datos_actualizados[1]['cantidad']
+        tipo=datos_actualizados[2]['tipo']
+        if tipo=='actualizar':
+            carrito_dicc[id_producto]['cantidad']=cantidad
+        else:
+            carrito_dicc.pop(id_producto)
+        print(carrito_dicc)
+        resultados={'procesado':'true'}
+
+        return jsonify(resultados)
 
 @app.route('/checkout')
 def pago():
@@ -159,19 +177,30 @@ def producto(id_producto_general):
     return render_template('producto.html', producto=producto)
 
 
-@app.route('/producto/<id_producto_general>/<id_producto_especifico>')
+@app.route('/producto/<id_producto_general>/<id_producto_especifico>', methods=['GET','POST'])
 def producto_especifico(id_producto_general,id_producto_especifico):
-    query=f'call cuenta_visitas({id_producto_especifico});'
-    cursor_dict.execute(query)
+    print(carrito_dicc)
     productos_especificos_dict=actualizar_diccionario(cursor_dict, 'producto_especifico', 'id_producto_especifico')
     producto_especifico=productos_especificos_dict[id_producto_especifico]
     query = f"SELECT imagen FROM imagenes_especificas WHERE id_producto_especifico = {id_producto_especifico};"
     lista_fotos = organizar_lista(cursor_dict,query,'imagen')
     lista_tallas = actualizar_diccionario(cursor_dict,'talla','id_talla')
     lista_colores = actualizar_diccionario(cursor_dict,'color','id_color')
-    print(lista_tallas)
-    print(producto_especifico['id_talla'])
-    return render_template('producto.html',producto=producto_especifico, fotos=lista_fotos,tallas=lista_tallas, colores=lista_colores)
+    if request.method=='GET':
+        query=f'call cuenta_visitas({id_producto_especifico});'
+        cursor_dict.execute(query)
+        return render_template('producto.html',producto=producto_especifico, fotos=lista_fotos,tallas=lista_tallas, colores=lista_colores,carrito=carrito_dicc)
+    if request.method=='POST':
+        if id_producto_especifico not in carrito_dicc:
+            carrito_dicc[id_producto_especifico]={
+                'id_producto_especifico':id_producto_especifico,
+                'precio':request.form['precio'],
+                'cantidad':request.form['cantidad_form'],
+                'nombre':request.form['nombre_form']
+            }
+        else:
+            carrito_dicc[id_producto_especifico]['cantidad']=str(int(request.form['cantidad_form'])+int(carrito_dicc[id_producto_especifico]['cantidad']))
+        return render_template('producto.html',producto=producto_especifico, fotos=lista_fotos,tallas=lista_tallas, colores=lista_colores,carrito=carrito_dicc)
 
 #@app.route('/agregarcarrito')
 #def agregarcarrito(id):
