@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, session, redirect, flash, jsonify
 import mysql.connector
 import os
-from funciones import lista_a_dict, actualizar_diccionario, orden, organizar_lista,sumar_cantidad,listar_ordenes
+from funciones import lista_a_dict, actualizar_diccionario, orden, organizar_lista,sumar_cantidad,listar_ordenes, obtener_diccionario_tallacolor
 
 
 app = Flask(__name__)
@@ -28,11 +28,13 @@ cursor_dict.execute(query)
 tallas = cursor_dict.fetchall()
 #diccionario de todas las tallas
 tallas = lista_a_dict(tallas,'id_talla')
+print(tallas)
 query = 'SELECT * FROM color;'
 cursor_dict.execute(query)
 colores = cursor_dict.fetchall()
 #diccionario de todos los colores
 colores = lista_a_dict(colores,'id_color')
+print(colores)
   #  diccionario_ordenes=lista_a_dict(lista_ordenes,ordenal['idpedidos'])
 carrito_dicc = {}
 @app.route('/',methods=['GET','POST'])
@@ -186,6 +188,7 @@ def producto(id_producto_general):
 
 @app.route('/producto/<id_producto_general>/<id_producto_especifico>', methods=['GET','POST'])
 def producto_especifico(id_producto_general,id_producto_especifico):
+    print('CARRITO')
     print(carrito_dicc)
     productos_especificos_dict=actualizar_diccionario(cursor_dict, 'producto_especifico', 'id_producto_especifico')
     producto_especifico=productos_especificos_dict[id_producto_especifico]
@@ -227,10 +230,11 @@ def productos_generales():
 @app.route('/agregar_producto_especifico/<id_producto_general>', methods=['GET','POST'])
 def agregar_producto_especifico(id_producto_general):
     productos_dict=actualizar_diccionario(cursor_dict,'producto_general','id_producto_general')
+    categoria = productos_dict[id_producto_general]['id_categoria'] 
     if request.method == 'GET':
         print(productos_dict)
         producto = productos_dict[str(id_producto_general)]
-        return render_template("agregar_subproducto.html",producto=producto, colores=colores, tallas=tallas)
+        return render_template("agregar_subproducto.html",producto=producto, colores=colores, tallas=tallas,id_categoria=categoria)
     if request.method == 'POST':
         producto = productos_dict[str(id_producto_general)]
         nombre_producto = request.form['nombre_producto']
@@ -243,10 +247,13 @@ def agregar_producto_especifico(id_producto_general):
         else:
             activo_introducido=False
         #consigue el id de la talla ingresada en el form
-        query_select = f'SELECT id_talla FROM talla WHERE talla = "{request.form["talla"]}";'
-        cursor_dict.execute(query_select)
-        lista_id_talla = cursor_dict.fetchall()
-        id_talla = lista_id_talla[0]["id_talla"]
+        if categoria == 2:
+            query_select = f'SELECT id_talla FROM talla WHERE talla = "{request.form["talla"]}";'
+            cursor_dict.execute(query_select)
+            lista_id_talla = cursor_dict.fetchall()
+            id_talla = lista_id_talla[0]["id_talla"]
+        else:
+            id_talla = 5
         #consigue el id del color ingresado en el form
         query_select = f'SELECT id_color FROM color WHERE color = "{request.form["color"]}";'
         cursor_dict.execute(query_select)
@@ -266,18 +273,13 @@ def agregar_producto_especifico(id_producto_general):
             cursor_dict.execute(query)
             conexion.commit()
         productos_especificos_dict=actualizar_diccionario(cursor_dict, 'producto_especifico', 'id_producto_especifico')
-        return render_template("agregar_subproducto.html",producto=producto, colores=colores, tallas=tallas)
+        return render_template("agregar_subproducto.html",producto=producto, colores=colores, tallas=tallas, id_categoria = categoria)
 
 @app.route('/json_productos_especificos/<id_general>')
 def obtener_productos_especificos(id_general):
-    query = "SELECT * FROM producto_especifico"
-    cursor_dict.execute(query)
-    resul = cursor_dict.fetchall()
-    print(resul)
-    query = f'SELECT P.id_producto_especifico, T.talla, C.color FROM producto_especifico P, talla T,color C GROUP BY C.color, T.talla, P.id_producto_especifico ORDER BY P.id_producto_especifico'
-    cursor_dict.execute(query)
-    dictionary = cursor_dict.fetchall()
-    return jsonify(dictionary)
+    query_productotallacolor = f"SELECT p.id_producto_general, t.talla,c.color FROM producto_especifico p INNER JOIN talla t INNER JOIN color c where id_producto_general = {id_general} AND p.id_talla = t.id_talla AND p.id_color = c.id_color GROUP BY T.talla, C.color;"
+    productotallacolor = obtener_diccionario_tallacolor()
+    return jsonify(productotallacolor)
 
 
 @app.route('/verificar_pago', methods=['GET','POST'])

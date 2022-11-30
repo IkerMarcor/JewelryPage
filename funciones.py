@@ -102,3 +102,8 @@ def listar_ordenes(cursor_dict,id_usuario)->list:
             direccion=direccione['direccion']
         lista_ordenes.append(orden(ordenal['idpedidos'],lista_idproductos,lista_idgeneral,lista_cantidad,lista_nombre,lista_precio,lista_imagenes,direccion))
     return lista_ordenes
+
+def obtener_diccionario_tallascolor(query,cursor_dict,llave)->dict:
+    cursor_dict.execute(query)
+    productotallacolor = cursor_dict.fetchall()
+    return productotallacolor

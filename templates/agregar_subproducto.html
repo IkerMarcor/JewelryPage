@@ -83,6 +83,7 @@
                 <label for="cantidad">Cantidad: </label>
                 <input type="number" name="cantidad" id="cantidad">
             </div>
+            {% if id_categoria == 2 %}
             <div class="form-group">
                 <select class="form-control" id="talla" name="talla">
                     {% for id_talla, talla in tallas.items() %}
@@ -90,6 +91,7 @@
                     {% endfor %}
                 </select>
             </div>
+            {% endif %}
             <div class="form-group">
                 <select class="form-control" id="color" name="color">
                     {% for id_color, color in colores.items() %}
