@@ -321,7 +321,7 @@
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold">${{"%.2f"|format((lista_precios|sum)+80)}}</h5>
+                            <h5 class="font-weight-bold" id="grand-total" onclick="prueba()">${{"%.2f"|format((lista_precios|sum)+80)}}</h5>
                         </div>
                     </div>
                 </div>
@@ -342,13 +342,22 @@
 {{super()}}
 
 <script>
+
+    function prueba() {
+        
+        alert(valor)
+    }   
+
     paypal.Buttons({
+        
         // Sets up the transaction when a payment button is clicked
+        
         createOrder: (data, actions) => {
           return actions.order.create({
             purchase_units: [{
               amount: {
-                value: '77.44' // Can also reference a variable or function
+                value: document.getElementById('grand-total').innerHTML.substring(1),
+                carrito: {{carrito|tojson}}
               }
             }]
           });
@@ -359,10 +368,21 @@
             // Successful capture! For dev/demo purposes:
             console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
             const transaction = orderData.purchase_units[0].payments.captures[0];
-            alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
+            //alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
+            $.ajax({
+                type: "POST",
+                url: "/verificar_pago",
+                data: JSON.stringify(orderData),
+                contentType: "application/json",
+                dataType: 'json',
+                success: function(result) {
+                console.log("Result:");
+                console.log(result);
+                 }  
+                });
             // When ready to go live, remove the alert and show a success message within this page. For example:
-            // const element = document.getElementById('paypal-button-container');
-            // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+             const element = document.getElementById('paypal-button-container');
+             element.innerHTML = '<h3>Thank you for your payment!</h3>';
             // Or go to another URL:  actions.redirect('thank_you.html');
           });
         }

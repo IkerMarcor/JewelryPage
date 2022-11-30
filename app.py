@@ -279,6 +279,16 @@ def obtener_productos_especificos(id_general):
     dictionary = cursor_dict.fetchall()
     return jsonify(dictionary)
 
+
+@app.route('/verificar_pago', methods=['GET','POST'])
+def verificar_pago():
+    if request.method=='POST':
+        datos_actualizados = request.get_json()
+        print(datos_actualizados)
+        carrito_dicc.clear()
+        resultados={'procesado':'true'}
+        return jsonify(resultados)
+
 @app.route('/editar_producto/<id_producto_general>', methods=['GET','POST'])
 def editar_producto_general(id_producto_general):
 
