@@ -7,7 +7,8 @@ class orden:
     nombre: list
     precio:list
     imagen: list
-    def __init__(self, idpedido:int, idproductos:list,idgeneral:list,cantidad:list,nombre:list,precio:list,imagen:list):
+    direccion: str
+    def __init__(self, idpedido:int, idproductos:list,idgeneral:list,cantidad:list,nombre:list,precio:list,imagen:list, direccion:str):
         self.idpedido=idpedido
         self.idproductos=idproductos
         self.idgeneral=idgeneral
@@ -15,6 +16,7 @@ class orden:
         self.nombre=nombre
         self.precio=precio
         self.imagen=imagen
+        self.direccion=direccion
 
 
 def lista_a_dict(lista:list,llave:str):
@@ -91,5 +93,12 @@ def listar_ordenes(cursor_dict,id_usuario)->list:
         lista_imagenes=[]
         for imagenes in ordenes_imagen_producto:
             lista_imagenes.append(imagenes['imagen'])
-        lista_ordenes.append(orden(ordenal['idpedidos'],lista_idproductos,lista_idgeneral,lista_cantidad,lista_nombre,lista_precio,lista_imagenes))
+        query=f'SELECT direccion FROM direccion AS d INNER JOIN VENTA AS v ON d.id_direccion=v.id_direccion INNER JOIN pedidos AS p ON p.idpedidos=v.id_pedido WHERE p.idusuario={id_usuario} AND idpedidos={str(ordenal["idpedidos"])}'
+        cursor_dict.execute(query)
+        ordenes_imagen_producto=cursor_dict.fetchall().copy()
+        direcciones_falsas=[]
+        direccion=str
+        for direccione in direcciones_falsas:
+            direccion=direccione['direccion']
+        lista_ordenes.append(orden(ordenal['idpedidos'],lista_idproductos,lista_idgeneral,lista_cantidad,lista_nombre,lista_precio,lista_imagenes,direccion))
     return lista_ordenes

@@ -158,7 +158,8 @@
                 {% for orden in lista_ordenes %}
                     <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">ORDEN {{orden['idpedido']}}</h5>
+                            <h5 class="mb-1">ORDEN #{{orden['idpedido']}}</h5>
+                            <h5 class="mb-1">TOTAL: ${{total[loop.index0]}}</h5>
                         </div>
                         <table style="width:100%">
                             <tr>
@@ -168,12 +169,12 @@
                             </tr>
                             <tr>
                                 {% for nombre in orden['nombre'] %}
-                                    <td><h5 class="mb-1">{{nombre}}</h5></td>
+                                    <td><h5 class="font-weight-semi-bold m-0">{{nombre}}</h5></td>
                                 {% endfor %}
                             </tr>
                             <tr>
                                 {% for precio in orden['cantidad'] %}
-                                    <td><h5 class="mb-1">CANTIDAD: {{precio}}</h5></td>
+                                    <td>CANTIDAD: {{precio}}</td>
                                 
                                 {% endfor %}
                             </tr>

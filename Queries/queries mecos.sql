@@ -1,1 +1,1 @@
-SELECT * FROM producto_general;
+SELECT * FROM producto_especifico;

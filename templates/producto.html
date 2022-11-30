@@ -432,5 +432,24 @@
             document.getElementById('cantidad').value = value;
             document.getElementById('cantidad_form').value = value;
         }
+
+        function cargar_tallascolores() {
+            fetch('/json_productos_especificos/' + id_producto_general.value).then(function(response) {//con un fetch se agarran los valores del json
+                response.json().then(function(data) {
+                    let optionHTML = '';
+                    if (data.citas.length == 0) {
+                        optionHTML = '<option value="no">--No hay citas agendadas--</option>'
+                    }
+                    else{
+                        for(let cita of data.citas){
+                        optionHTML += '<option value="' + cita.fecha_hora + '">' + cita.fecha_hora + '</option>'
+                    }
+                    }
+    
+    
+                    fecha_hora.innerHTML = optionHTML;
+                });
+            });
+        }
     </script>
     {% endblock %}

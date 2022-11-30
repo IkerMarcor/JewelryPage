@@ -96,7 +96,10 @@ def ver_ordenes():
     if 'logged_in' in session:
         lista_ordenes=listar_ordenes(cursor_dict,session['id'])
         if request.method=='GET':
-            return render_template('ver_ordenes.html',lista_ordenes=lista_ordenes)#usuario_actual=idusuario
+            total=[]
+            for objeto in lista_ordenes:
+                total.append(sumar_cantidad(objeto.precio, objeto.cantidad))
+            return render_template('ver_ordenes.html',lista_ordenes=lista_ordenes,total=total)#usuario_actual=idusuario
     else:
         return redirect('/')
     
@@ -109,7 +112,6 @@ def ver_orden(idpedido):
             for objeto in lista_ordenes:
                 if int(idpedido)==objeto.idpedido:
                     pedido=objeto
-            print(pedido.idgeneral)
             total=sumar_cantidad(pedido.precio,pedido.cantidad)
             return render_template('ver_orden.html',pedido=pedido,total=total)
     else:
@@ -142,9 +144,10 @@ def agregar_producto():
         return render_template('agregar_producto.html', mensaje='exito',categorias=categorias)
 
 
-@app.route('/cart')
+@app.route('/cart',methods=['GET','POST'])
 def carrito():
-    return render_template('cart.html',carrito=carrito_dicc)
+    if request.method=='GET':
+        return render_template('cart.html',carrito=carrito_dicc)
 
 @app.route('/actualizar_carritodict',methods=['GET','POST'])
 def actualizar_carritodict():
@@ -165,7 +168,10 @@ def actualizar_carritodict():
 
 @app.route('/checkout')
 def pago():
-    return render_template('checkout.html')
+    print(carrito_dicc)
+    if(len(carrito_dicc)==0):
+        return redirect('/cart')
+    return render_template('checkout.html',carrito=carrito_dicc)
 
 @app.route('/contact')
 def contacto():
@@ -174,7 +180,8 @@ def contacto():
 @app.route('/producto/<id_producto_general>')
 def producto(id_producto_general):
     producto=productos_dict[id_producto_general]
-    return render_template('producto.html', producto=producto)
+    print(producto)
+    return render_template('productos_generales.html', productos=producto)
 
 
 @app.route('/producto/<id_producto_general>/<id_producto_especifico>', methods=['GET','POST'])
@@ -261,6 +268,16 @@ def agregar_producto_especifico(id_producto_general):
         productos_especificos_dict=actualizar_diccionario(cursor_dict, 'producto_especifico', 'id_producto_especifico')
         return render_template("agregar_subproducto.html",producto=producto, colores=colores, tallas=tallas)
 
+@app.route('/json_productos_especificos/<id_general>')
+def obtener_productos_especificos(id_general):
+    query = "SELECT * FROM producto_especifico"
+    cursor_dict.execute(query)
+    resul = cursor_dict.fetchall()
+    print(resul)
+    query = f'SELECT P.id_producto_especifico, T.talla, C.color FROM producto_especifico P, talla T,color C GROUP BY C.color, T.talla, P.id_producto_especifico ORDER BY P.id_producto_especifico'
+    cursor_dict.execute(query)
+    dictionary = cursor_dict.fetchall()
+    return jsonify(dictionary)
 
 @app.route('/editar_producto/<id_producto_general>', methods=['GET','POST'])
 def editar_producto_general(id_producto_general):
