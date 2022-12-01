@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request, session, redirect, flash, jsonify
 import mysql.connector
 import os
-from funciones import lista_a_dict, actualizar_diccionario,actualizar_diccionario_productoXcategoria, orden, organizar_lista,sumar_cantidad,listar_ordenes,enviar_correo_confirmar_pago
+from funciones import lista_a_dict, actualizar_diccionario,actualizar_diccionario_productoXcategoria, orden, organizar_lista,sumar_cantidad,listar_ordenes,recuperar_contrasena,enviar_correo_confirmar_pago
 
 
 app = Flask(__name__)
@@ -67,14 +67,41 @@ def login_empleados():
         else:
             session['datos_erroneos']=True
             return redirect('/login_empleados')
-    
+
+@app.route('/recuperar',methods=['GET','POST'])
+def recuperar():
+    if request.method == 'POST':
+        datos = request.get_json()
+        correo=datos[0]['correo']
+        resultados={'procesado':'true'}
+        query=f'SELECT contrasena FROM usuarios WHERE correo="{correo}"'
+        cursor.execute(query)
+        contrasenas=cursor.fetchall()
+        for contrasena in contrasenas:
+            recuperar_contrasena(correo, contrasena)
+        return jsonify(resultados)
+
 @app.route('/login',methods=['GET','POST'])
 def login():
     if request.method == 'POST':
         datos = request.get_json()
         print(datos)
-        #correo=datos[0]['email']
-        #contrasena=datos[1]['password']
+        correo=datos[0]['correo']
+        contrasena=datos[1]['password']
+        query=f'SELECT username,correo,contrasena,idusuarios FROM usuarios WHERE correo="{correo}" AND contrasena="{contrasena}";'
+        cursor.execute(query)
+        resultados=cursor.fetchall()
+        if len(resultados)>0:
+            session['correo']=correo
+            session['usuario']=resultados[0][0]
+            session['id']=resultados[0][3]
+            print(resultados[0][3])
+            current_user=session['usuario']
+            print(session['usuario'])
+            session['logged_in']=True
+            session['datos_erroneos']=False
+        else:
+            session['datos_erroneos']=True
         resultados={'procesado':'true'}
         return jsonify(resultados)
     else:
@@ -82,20 +109,41 @@ def login():
 
 @app.route('/register',methods=['GET','POST'])
 def register():
-    if request.method == 'POST':
+    if request.method=='POST':    
         datos = request.get_json()
-        print(datos)
-        usuario=datos_actualizados[0]['id_producto']
-        cantidad=datos_actualizados[1]['cantidad']
-        tipo=datos_actualizados[2]['tipo']
-        if tipo=='actualizar':
-            carrito_dicc[id_producto]['cantidad']=cantidad
+        session['datos_erroneos'] = False
+        nombre_usuario = datos[0]['username'] 
+        correo_electronico = datos[1]['email']
+        nombres = datos[2]['nombre']
+        apellido1 = datos[3]['apellido1']
+        apellido2 = datos[4]['apellido2']
+        contrasena = datos[5]['password']
+        contrasena_confirmacion = datos[6]['password_confirmation']
+        session['contrasenas_diferentes'] = False
+        session['correo_repetido']=False
+        if contrasena == contrasena_confirmacion:
+            query=f'SELECT username,correo,contrasena FROM usuarios WHERE correo="{correo_electronico}";'
+            cursor.execute(query)
+            resultados=cursor.fetchall()
+            if len(resultados)==0:
+                query_insertar = f'INSERT INTO usuarios (username,nombre,apellido1,apellido2,correo,contrasena) VALUES ("{nombre_usuario}","{nombres}","{apellido1}","{apellido2}","{correo_electronico}","{contrasena}")'
+                cursor.execute(query_insertar)
+                session['logged_in'] = True
+                session['correo']=correo_electronico
+                session['usuario']=nombre_usuario
+                session['id']=cursor.lastrowid
+                current_user=session['usuario']
+                resultados={'procesado':'true'}
+                return jsonify(resultados)
+            else:
+                session['correo_repetido'] = True
+                resultados={'procesado':'true'}
+                return jsonify(resultados)
         else:
-            carrito_dicc.pop(id_producto)
-        print(carrito_dicc)
-        resultados={'procesado':'true'}
-
-        return jsonify(resultados)
+            print('ola')
+            session['contrasenas_diferentes'] = True
+            resultados={'procesado':'true'}
+            return jsonify(resultados)
     else:
          return None
 
@@ -136,59 +184,30 @@ def ingresar_direccion():
 @app.route('/',methods=['GET','POST'])
 def index():
     if request.method=='GET':
-        print(categorias)
-        return render_template('index.html')
-    if request.method=='POST':
-        if 'login' in request.form:
-            correo_introducido=request.form['email']
-            contrasena_introducida=request.form['password']
-            query=f'SELECT username,correo,contrasena,idusuarios FROM usuarios WHERE correo="{correo_introducido}" AND contrasena="{contrasena_introducida}";'
-            cursor.execute(query)
-            resultados=cursor.fetchall()
-            if len(resultados)>0:
-                session['correo']=correo_introducido
-                session['usuario']=resultados[0][0]
-                session['id']=resultados[0][3]
-                print(resultados[0][3])
-                current_user=session['usuario']
-                print(session['usuario'])
-                session['logged_in']=True
-                session['datos_erroneos']=False
-            else:
-                session['datos_erroneos']=True
-            return render_template('index.html')
-        else:
-            if 'registro' in request.form:
-
-                session['datos_erroneos'] = False
-                nombre_usuario = request.form['username']
-                correo_electronico = request.form['email']
-                nombres = request.form['nombre']
-                apellido1 = request.form['apellido1']
-                apellido2 = request.form['apellido2']
-                contrasena = request.form['password']
-                contrasena_confirmacion = request.form['password_confirmation']
-                session['contrasenas_diferentes'] = False
-                if contrasena == contrasena_confirmacion:
-                    query=f'SELECT username,correo,contrasena FROM usuarios WHERE correo="{correo_electronico}" AND contrasena="{contrasena}";'
-                    cursor.execute(query)
-                    resultados=cursor.fetchall()
-                    if len(resultados)==0:
-                        query_insertar = f'INSERT INTO usuarios (username,nombre,apellido1,apellido2,correo,contrasena) VALUES ("{nombre_usuario}","{nombres}","{apellido1}","{apellido2}","{correo_electronico}","{contrasena}")'
-                        cursor.execute(query_insertar)
-                        session['logged_in'] = True
-                    return render_template('index.html')
-                else:
-                    session['contrasenas_diferentes'] = True
-            else:
-                return render_template('index.html')
+        query="SELECT * FROM producto_especifico order by rand() limit 2;"
+        cursor_dict.execute(query)
+        productos_carousel=cursor_dict.fetchall()
+        query=f"SELECT * FROM imagenes_especificas WHERE id_producto_especifico={productos_carousel[0]['id_producto_especifico']} OR id_producto_especifico={productos_carousel[1]['id_producto_especifico']} GROUP BY id_producto_especifico;"
+        cursor_dict.execute(query)
+        imagenes_carousel=cursor_dict.fetchall()
+        productos_carousel=lista_a_dict(productos_carousel, 'id_producto_especifico')
+        imagenes_carousel=lista_a_dict(imagenes_carousel,'id_producto_especifico')
+        query=f'SELECT pe.id_producto_especifico,pe.id_producto_general, nombre, precio,imagen FROM historial_visitas AS hv INNER JOIN producto_especifico AS pe ON pe.id_producto_especifico=hv.id_producto_especifico INNER JOIN imagenes_especificas AS ie ON ie.id_producto_especifico=pe.id_producto_especifico WHERE anio=substring(CURDATE(),3,2) AND mes=substring(CURDATE(),6,2) GROUP BY pe.nombre ORDER BY hv.numero_visitas DESC LIMIT 8;'        
+        cursor_dict.execute(query)
+        populares=cursor_dict.fetchall()
+        populares=lista_a_dict(populares,'id_producto_especifico')
+        query=f'SELECT pe.id_producto_especifico,pe.id_producto_general, nombre, precio,imagen FROM producto_especifico AS pe INNER JOIN imagenes_especificas AS ie ON ie.id_producto_especifico=pe.id_producto_especifico ORDER BY pe.fecha_creacion DESC LIMIT 8;'        
+        cursor_dict.execute(query)
+        nuevos=cursor_dict.fetchall()
+        nuevos=lista_a_dict(nuevos,'id_producto_especifico')
+        return render_template('index.html',nuevos=nuevos,productos_carousel=productos_carousel,populares=populares,imagenes_carousel=imagenes_carousel,carrito=carrito_dicc)
 
 @app.route('/shop',methods=['GET','POST'])
 def tienda():
     productos_dict=actualizar_diccionario(cursor_dict, 'producto_general', 'id_producto_general')
     productos_especificos_amostrar=actualizar_diccionario(cursor_dict, 'producto_especifico', 'id_producto_general')
    
-    return render_template('shop.html',productos=productos_dict,productos_especificos_amostrar=productos_especificos_amostrar)
+    return render_template('shop.html',productos=productos_dict,productos_especificos_amostrar=productos_especificos_amostrar,carrito=carrito_dicc)
 
 @app.route('/shop/<categoria>', methods=['GET'])
 def productos_categoria(categoria):
@@ -198,7 +217,7 @@ def productos_categoria(categoria):
     productos_categoria=cursor_dict.fetchall()
     productos_categoria=actualizar_diccionario_productoXcategoria(cursor_dict, 'id_producto_general', categoria)
     productos_especificos_amostrar=actualizar_diccionario(cursor_dict, 'producto_especifico', 'id_producto_general')
-    return render_template('shop.html',productos=productos_categoria,productos_especificos_amostrar=productos_especificos_amostrar)
+    return render_template('shop.html',productos=productos_categoria,productos_especificos_amostrar=productos_especificos_amostrar,carrito=carrito_dicc)
 
 @app.route('/ver_ordenes',methods=['GET','POST'])
 def ver_ordenes():
@@ -208,7 +227,7 @@ def ver_ordenes():
             total=[]
             for objeto in lista_ordenes:
                 total.append(sumar_cantidad(objeto.precio, objeto.cantidad))
-            return render_template('ver_ordenes.html',lista_ordenes=lista_ordenes,total=total)#usuario_actual=idusuario
+            return render_template('ver_ordenes.html',lista_ordenes=lista_ordenes,total=total,carrito=carrito_dicc)#usuario_actual=idusuario
     else:
         return redirect('/')
     
@@ -222,7 +241,7 @@ def ver_orden(idpedido):
                 if int(idpedido)==objeto.idpedido:
                     pedido=objeto
             total=sumar_cantidad(pedido.precio,pedido.cantidad)
-            return render_template('ver_orden.html',pedido=pedido,total=total)
+            return render_template('ver_orden.html',pedido=pedido,total=total,carrito=carrito_dicc)
     else:
         return redirect('/')
         
@@ -252,6 +271,36 @@ def agregar_producto():
         print(productos_dict)
         return render_template('agregar_producto.html', mensaje='exito',categorias=categorias)
 
+@app.route('/editar_producto_general/<id_general>', methods=['GET','POST'])
+def editar_producto_general(id_general):    
+    productos_dict=actualizar_diccionario(cursor_dict, 'producto_general', 'id_producto_general')
+    producto=productos_dict[id_general]
+    if request.method=='GET':
+        query_select = f'SELECT categoria FROM categoria_producto WHERE id_categoria = "{producto["id_categoria"]}";'
+        cursor_dict.execute(query_select)
+        lista_id_categoria = cursor_dict.fetchall()
+        categoria_p = lista_id_categoria[0]["categoria"]
+        return render_template('editar_producto_general.html', categorias=categorias,producto=producto,categoria_p=categoria_p)
+    if request.method=='POST':
+        nombre_introducido=request.form['nombre_producto']
+        descripcion_introducido=request.form['descripcion']
+        foto_introducida=request.files['foto']
+        foto_ruta = foto_introducida.filename
+        if foto_ruta!='':
+            foto_introducida.save(os.path.join('static/img/',foto_ruta))
+        print(request.form)
+        if 'activo' in request.form:
+            activo_introducido=True
+        else:
+            activo_introducido=False
+        if foto_ruta=='':
+            query=f'UPDATE producto_general SET nombre_general="{nombre_introducido}", descripcion_general="{descripcion_introducido}", activo="{activo_introducido}" WHERE id_producto_general={producto["id_producto_general"]}'
+        else:
+            query=f'UPDATE producto_general SET nombre_general="{nombre_introducido}", descripcion_general="{descripcion_introducido}", imagen="{foto_ruta}", activo="{activo_introducido}" WHERE id_producto_general={producto["id_producto_general"]}'
+        cursor_dict.execute(query)
+        conexion.commit()
+        productos_dict=actualizar_diccionario(cursor_dict,'producto_general','id_producto_general')
+        return render_template('editar_producto_general.html', mensaje='exito',categorias=categorias,producto=producto)
 
 @app.route('/cart',methods=['GET','POST'])
 def carrito():
@@ -290,7 +339,7 @@ def contacto():
 def producto(id_producto_general):
     producto=productos_dict[id_producto_general]
     print(producto)
-    return render_template('productos_generales.html', productos=producto)
+    return render_template('productos_generales.html', productos=producto,carrito=carrito_dicc)
 
 
 @app.route('/producto/<id_producto_general>/<id_producto_especifico>', methods=['GET','POST'])
@@ -339,7 +388,6 @@ def agregar_producto_especifico(id_producto_general):
     productos_dict=actualizar_diccionario(cursor_dict,'producto_general','id_producto_general')
     categoria = productos_dict[id_producto_general]['id_categoria'] 
     if request.method == 'GET':
-        print(productos_dict)
         producto = productos_dict[str(id_producto_general)]
         return render_template("agregar_subproducto.html",producto=producto, colores=colores, tallas=tallas,id_categoria=categoria)
     if request.method == 'POST':
@@ -381,9 +429,49 @@ def agregar_producto_especifico(id_producto_general):
             foto.save(os.path.join('static/img/',foto_ruta))
             query=f'INSERT INTO imagenes_especificas (id_producto_especifico,imagen) VALUES({id_nuevo},"{foto_ruta}")'
             cursor_dict.execute(query)
-            conexion.commit()
+        conexion.commit()
+        query=f'UPDATE producto_general SET activo=1 WHERE id_producto_general={id_producto_general};'
+        cursor_dict.execute(query)
+        conexion.commit()
         productos_especificos_dict=actualizar_diccionario(cursor_dict, 'producto_especifico', 'id_producto_especifico')
         return render_template("agregar_subproducto.html",producto=producto, colores=colores, tallas=tallas, id_categoria = categoria)
+
+@app.route('/editar_producto_especifico/<id_producto_general>/<id_producto_especifico>', methods=['GET','POST'])
+def editar_producto_especifico(id_producto_general,id_producto_especifico):
+    productos_especificos_dict=actualizar_diccionario(cursor_dict, 'producto_especifico', 'id_producto_especifico')
+    producto_e=productos_especificos_dict[id_producto_especifico]
+    productos_dict=actualizar_diccionario(cursor_dict,'producto_general','id_producto_general')
+    categoria = productos_dict[id_producto_general]['id_categoria'] 
+    if request.method == 'GET':
+        producto = productos_dict[str(id_producto_general)]
+        return render_template("editar_producto_especifico.html",producto=producto,producto_e=producto_e,colores=colores, tallas=tallas,id_categoria=categoria)
+    if request.method == 'POST':
+        producto = productos_dict[str(id_producto_general)]
+        nombre_producto = request.form['nombre_producto']
+        descripcion = request.form['descripcion']
+        precio = request.form['precio']
+        detalles = request.form['detalles']
+        cantidad = request.form['cantidad']
+        if 'activo' in request.form:
+            activo_introducido=True
+        else:
+            activo_introducido=False
+        #insertar registro en base de datos
+        query=f'UPDATE producto_especifico SET nombre="{nombre_producto}", descripcion="{descripcion}",precio="{precio}",detalles="{detalles}",cantidad="{cantidad}", activo="{activo_introducido}" WHERE id_producto_especifico={id_producto_especifico};'
+        cursor_dict.execute(query)
+        conexion.commit()
+        fotos = request.files.getlist('foto')
+        #guardar fotos localmente y en la base de datos
+        for foto in fotos:
+            foto_ruta = foto.filename
+            if foto_ruta!='':
+                foto.save(os.path.join('static/img/',foto_ruta))
+                query=f'INSERT INTO imagenes_especificas (id_producto_especifico,imagen) VALUES({id_producto_especifico},"{foto_ruta}")'
+                cursor_dict.execute(query)
+                conexion.commit()
+        productos_especificos_dict=actualizar_diccionario(cursor_dict, 'producto_especifico', 'id_producto_especifico')
+        return render_template("editar_producto_especifico.html",producto=producto,producto_e=producto_e, colores=colores, tallas=tallas, id_categoria = categoria)
+
 
 @app.route('/verificar_pago', methods=['GET','POST'])
 def verificar_pago():
@@ -439,10 +527,6 @@ def verificar_pago():
         enviar_correo_confirmar_pago(correo,nombre,apellido,direccion,carrito)
         return jsonify(resultados)
 
-@app.route('/editar_producto/<id_producto_general>', methods=['GET','POST'])
-def editar_producto_general(id_producto_general):
-
-    return render_template("editar_producto_general.html")
 
 if __name__=='__main__':
     app.run(debug=True)

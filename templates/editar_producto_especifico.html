@@ -47,9 +47,9 @@
     <div class="container-fluid bg-secondary mb-5">
         <div class="d-inline-flex flex-column align-items-lg-baseline justify-content-center" style="min-height: 150px ">
             <div style="padding-left: 50px;">
-                <h1 class="font-weight-semi-bold text-uppercase mb-3" style="float: left; padding-right: 1100px; padding-top: 25px;">EDITAR PRODUCTO</h1>
+                <h1 class="font-weight-semi-bold text-uppercase mb-3" style="float: left; padding-right: 1100px; padding-top: 25px;">EDITAR SUBPRODUCTO</h1>
                 <a href="/" class="text-decoration-none" style="float: left;">
-                    <h1 class="m-0 display-5 font-weight-semi-bold titulo-logo"><span class="text-primary font-weight-bold "><img src="../static/img/LOGO.jpg" rel="icon" height="110" style="padding-left: 25px; padding-right: 25px;"></span>Finkies</h1>
+                    <h1 class="m-0 display-5 font-weight-semi-bold titulo-logo"><span class="text-primary font-weight-bold "><img src="/static/img/LOGO.jpg" rel="icon" height="110" style="padding-left: 0px; padding-right: 10px;"></span>Finkies</h1>
                 </a>
             </div>
         </div>
@@ -60,23 +60,39 @@
         {% if mensaje=='exito' %}
             <p style="color: green;">Articulo agregado exitosamente</p>
         {% endif %}
+        <h5>Subproducto de: {{producto['nombre_general']}}</h5>
+        <img src="/static/img/{{producto['imagen']}}" alt="" style="width: 100px;">
         <form role="form" method="POST" action="" enctype="multipart/form-data">
             <div class="form-group ">
               <label for="">Nombre del producto</label>
-              <input type="text" class="form-control" id="nombre_producto" name="nombre_producto" value="{{producto['nombre_general']}}">
+              <input type="text" class="form-control" id="nombre_producto" name="nombre_producto" value="{{producto_e['nombre']}}">
             </div>
             <div class="form-group">
               <label for="">Descripción general del producto</label>
-              <textarea class="form-control" id="descripcion" name="descripcion" rows="3" value="{{producto['descripcion_general']}}">{{producto['descripcion_general']}}</textarea>
+              <textarea class="form-control" id="descripcion" name="descripcion" rows="3">{{producto_e['descripcion']}}</textarea>
             </div>
             <div class="form-group">
-                <label for="">Imagen Principal</label>
-                <input type="file" class="form-control-file" id="foto" name="foto">
+                <label for="detalles">Detalles del producto</label>
+                <textarea class="form-control" id="detalles" name="detalles" rows="3">{{producto_e['detalles']}}</textarea>
               </div>
+            <div class="form-group">
+                <label for="precio">Precio: </label>
+                <input type="number" name="precio" id="precio" step="0.01" value="{{producto_e['precio']}}">
+            </div>
+            <div class="form-group">
+                <label for="cantidad">Cantidad: </label>
+                <input type="number" name="cantidad" id="cantidad" value="{{producto_e['cantidad']}}">
+            </div>
+            <div class="form-group" id="imagenes">
+                <div>
+                    <label for="" style="display:block;">Imagenes</label>
+                    <input type="file" multiple id="foto" name="foto" style="width: 250px;">
+                </div>
+            </div>
             <div class="form-group">
                 <label for="activo">Activo</label>
                 <input type="checkbox" id="activo" name="activo" 
-                {% if producto['activo']==1 %} checked{% endif %}>
+                {% if producto_e['activo']==1 %} checked{% endif %}>
             </div>
             <div>
                 <button type="submit" class="btn btn-primary">Actualizar</button>

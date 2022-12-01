@@ -110,27 +110,48 @@ def listar_ordenes(cursor_dict,id_usuario)->list:
         lista_ordenes.append(orden(ordenal['idpedidos'],lista_idproductos,lista_idgeneral,lista_cantidad,lista_nombre,lista_precio,lista_imagenes,direccion))
     return lista_ordenes
 
+def recuperar_contrasena(correo:str,contrasena:str):
+    email_from = 'finkiespage@gmail.com'
+    password = 'stekfbwujnjhxynp'
+    email_to = correo
+
+    # Plain Text string as the email message
+    email_string = f'Hola, su contrasena es {contrasena} (recuerda que si tu contrasena cuenta con caracteres especiales no se veran reflejados en este correo, asi que tenga eso en consideracion).'
+    email_string=email_string.replace('á','a')
+    email_string=email_string.replace('é','e')
+    email_string=email_string.replace('í','i')
+    email_string=email_string.replace('ó','o')
+    email_string=email_string.replace('ú','u')
+    email_string=email_string.replace('ñ','n')
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+        server.login(email_from, password)
+        server.sendmail(email_from, email_to, email_string)
+
 def enviar_correo_confirmar_pago(correo:str,nombre:str,apeliido:str,direccion:str,carrito:dict):
     email_from = 'finkiespage@gmail.com'
     password = 'stekfbwujnjhxynp'
     email_to = correo
 
     # Plain Text string as the email message
-    email_string = f'HOLA {nombre} {apeliido}, gracias por tu compra, tu pago a sido generado correctamente.'
-    email_string = email_string + f'\nEstos son los productos que compraste:'
+    email_string = f'HOLA {nombre} {apeliido}, gracias por tu compra, tu pago ha sido generado correctamente.'
+    email_string = email_string + f'\nEstos son los productos que compraste:\n'
+    total=0
     for id_producto,producto in carrito.items():
         nombre_producto=producto['nombre']
         cantidad=producto['cantidad']
         precio=producto['precio']   
+        total=total+(float(cantidad)*float(precio))
         email_string = email_string + f'\n {nombre_producto}   {cantidad}   {precio}'
-    email_string = email_string + f'\n \nDirección de envío {direccion}'
-
-    # Connect to the Gmail SMTP server and Send Email
-    # Create a secure default settings context
+    email_string = email_string + f'\n \nTotal del pedido {total}'
+    email_string = email_string + f'\nDireccion de envio {direccion}'
+    email_string=email_string.replace('á','a')
+    email_string=email_string.replace('é','e')
+    email_string=email_string.replace('í','i')
+    email_string=email_string.replace('ó','o')
+    email_string=email_string.replace('ú','u')
+    email_string=email_string.replace('ñ','n')
     context = ssl.create_default_context()
-    # Connect to Gmail's SMTP Outgoing Mail server with such context
     with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-        # Provide Gmail's login information
         server.login(email_from, password)
-        # Send mail with from_addr, to_addrs, msg, which were set up as variables above
         server.sendmail(email_from, email_to, email_string)
