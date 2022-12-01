@@ -1,4 +1,5 @@
 
+import smtplib, ssl
 class orden:
     idpedido: int
     idproductos: list
@@ -28,6 +29,13 @@ def lista_a_dict(lista:list,llave:str):
 
 def actualizar_diccionario(cursor_dict,tabla:str,llave:str):
     query=f'SELECT * FROM {tabla};'
+    cursor_dict.execute(query)
+    productos=cursor_dict.fetchall()
+    productos_dict=lista_a_dict(productos,llave)
+    return productos_dict
+
+def actualizar_diccionario_productoXcategoria(cursor_dict,llave:str,categoria:str):
+    query = f"SELECT p.id_producto_general,p.nombre_general, p.descripcion_general,p.imagen,p.activo,p.id_categoria,c.categoria FROM producto_general p INNER JOIN categoria_producto c WHERE c.id_categoria = p.id_categoria AND c.categoria = '{categoria}';"
     cursor_dict.execute(query)
     productos=cursor_dict.fetchall()
     productos_dict=lista_a_dict(productos,llave)
@@ -95,15 +103,34 @@ def listar_ordenes(cursor_dict,id_usuario)->list:
             lista_imagenes.append(imagenes['imagen'])
         query=f'SELECT direccion FROM direccion AS d INNER JOIN VENTA AS v ON d.id_direccion=v.id_direccion INNER JOIN pedidos AS p ON p.idpedidos=v.id_pedido WHERE p.idusuario={id_usuario} AND idpedidos={str(ordenal["idpedidos"])}'
         cursor_dict.execute(query)
-        ordenes_imagen_producto=cursor_dict.fetchall().copy()
-        direcciones_falsas=[]
+        direcciones_falsas=cursor_dict.fetchall().copy()
         direccion=str
         for direccione in direcciones_falsas:
             direccion=direccione['direccion']
         lista_ordenes.append(orden(ordenal['idpedidos'],lista_idproductos,lista_idgeneral,lista_cantidad,lista_nombre,lista_precio,lista_imagenes,direccion))
     return lista_ordenes
 
-def obtener_diccionario_tallascolor(query,cursor_dict,llave)->dict:
-    cursor_dict.execute(query)
-    productotallacolor = cursor_dict.fetchall()
-    return productotallacolor
+def enviar_correo_confirmar_pago(correo:str,nombre:str,apeliido:str,direccion:str,carrito:dict):
+    email_from = 'finkiespage@gmail.com'
+    password = 'stekfbwujnjhxynp'
+    email_to = correo
+
+    # Plain Text string as the email message
+    email_string = f'HOLA {nombre} {apeliido}, gracias por tu compra, tu pago a sido generado correctamente.'
+    email_string = email_string + f'\nEstos son los productos que compraste:'
+    for id_producto,producto in carrito.items():
+        nombre_producto=producto['nombre']
+        cantidad=producto['cantidad']
+        precio=producto['precio']   
+        email_string = email_string + f'\n {nombre_producto}   {cantidad}   {precio}'
+    email_string = email_string + f'\n \nDirección de envío {direccion}'
+
+    # Connect to the Gmail SMTP server and Send Email
+    # Create a secure default settings context
+    context = ssl.create_default_context()
+    # Connect to Gmail's SMTP Outgoing Mail server with such context
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+        # Provide Gmail's login information
+        server.login(email_from, password)
+        # Send mail with from_addr, to_addrs, msg, which were set up as variables above
+        server.sendmail(email_from, email_to, email_string)

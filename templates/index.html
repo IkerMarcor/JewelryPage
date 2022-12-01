@@ -2,6 +2,7 @@
 {% block title %}Finkies{% endblock %}
 {% block head %}
 {{super()}}
+<script src="/static/javascript/login_functions.js"></script>
 {% endblock %}
 {% block body %}
 
@@ -20,11 +21,11 @@
                 </a>
                 <nav class="collapse show navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0" id="navbar-vertical">
                     <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
-                        <a href="" class="nav-item nav-link">Aretes</a>
-                        <a href="" class="nav-item nav-link">Playeras</a>
-                        <a href="" class="nav-item nav-link">Collares</a>
-                        <a href="" class="nav-icem nav-link">Stickers</a>
-                        <a href="" class="nav-item nav-link">Pulseras</a>
+                        <a href="/shop/<Aretes>" class="nav-item nav-link">Aretes</a>
+                        <a href="/shop/<Playeras>" class="nav-item nav-link">Playeras</a>
+                        <a href="/shop/<Collares>" class="nav-item nav-link">Collares</a>
+                        <a href="/shop/<Stickers>" class="nav-icem nav-link">Stickers</a>
+                        <a href="/shop/<Pulseras>" class="nav-item nav-link">Pulseras</a>
                     </div>
                 </nav>
             </div>
@@ -45,6 +46,20 @@
                             <a href="/contact" class="nav-item nav-link">Contacto</a>
                         </div>
                         <div class="navbar-nav ml-2 py-0">
+                            {% if 'logged_in' in session %}
+                                {% if session['empleado']==True %}
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Menú Empleados
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="/agregar_producto">Agregar producto</a>
+                                    <a class="dropdown-item" href="/productos_generales">Productos generales</a>
+                                    <a class="dropdown-item" href="/reporte_de_visitas">Historial de visitas</a>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% endif %}
                         {% if 'logged_in' not in session%}
                             <!--Login empieza-->
                             <button id='botonlogin' type="button" class="btn btn-primary btn-lg login" data-toggle="modal" data-target="#ModalLoginForm">
@@ -69,13 +84,13 @@
                                             <div class="form-group">
                                                 <label class="control-label">Correo electrónico</label>
                                                 <div>
-                                                    <input type="email" class="form-control input-lg" name="email" value="" required>
+                                                    <input type="email" class="form-control input-lg" name="email" id="email" value="" required>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label">Contraseña</label>
                                                 <div>
-                                                    <input type="password" class="form-control input-lg" name="password" required>
+                                                    <input type="password" class="form-control input-lg" name="password" id="contrasena" required>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -89,7 +104,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <div>
-                                                    <button type="submit" class="btn btn-success">Login</button>
+                                                    <button onclick="login()" class="btn btn-success">Login</button>
 
                                                     <a class="btn btn-link" href="">¿Olvidaste tu contraseña?</a>
                                                 </div>
@@ -103,7 +118,7 @@
                         <!--Login termina-->
                         <!--Register-->
                         <div class="navbar-nav ml-2 py-0">  
-                            <button type="button" class="btn btn-primary btn-lg login" data-toggle="modal" data-target="#ModalRegisterForm">
+                            <button type="button"  class="btn btn-primary btn-lg login" data-toggle="modal" data-target="#ModalRegisterForm">
                                 Registrate
                             </button>
                         <div id="ModalRegisterForm" class="modal fade">
@@ -119,43 +134,43 @@
                                             <div class="form-group">
                                                 <label class="control-label">Nombre de usuario*</label>
                                                 <div>
-                                                    <input type="text" class="form-control input-lg" name="username" value="" required> <!--registrar username-->
+                                                    <input type="text" class="form-control input-lg" id="username" name="username" value="" required> <!--registrar username-->
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label">Correo electrónico*</label>
                                                 <div>
-                                                    <input type="email" class="form-control input-lg" name="email" value="" required> <!--registrar email-->
+                                                    <input type="email" class="form-control input-lg" id="email" name="email" value="" required> <!--registrar email-->
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label">Nombres*</label>
                                                 <div>
-                                                    <input type="text" class="form-control input-lg" name="nombre" value="" required> <!--registrar nombres-->
+                                                    <input type="text" class="form-control input-lg" id="nombre" name="nombre" value="" required> <!--registrar nombres-->
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label">Primer Apellido*</label>
                                                 <div>
-                                                    <input type="text" class="form-control input-lg" name="apellido1" value="" required> <!--registrar apellido1-->
+                                                    <input type="text" class="form-control input-lg" id="apellido1" name="apellido1" value="" required> <!--registrar apellido1-->
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label">Segundo Apellido</label>
                                                 <div>
-                                                    <input type="text" class="form-control input-lg" name="apellido2" value=""> <!--registrar apellido2-->
+                                                    <input type="text" class="form-control input-lg" id="apellido2" name="apellido2" value=""> <!--registrar apellido2-->
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label">Contraseña*</label>
                                                 <div>
-                                                    <input type="password" class="form-control input-lg" name="password" onkeyup='check();' required> <!--registrar contraseña-->
+                                                    <input type="password" class="form-control input-lg" id="contrasena1" name="password" onkeyup='check();' required> <!--registrar contraseña-->
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label">Confirmar Contraseña*</label>
                                                 <div>
-                                                    <input type="password" class="form-control input-lg" name="password_confirmation" onkeyup='check();' required> <!--registrar confirmar contraseña-->
+                                                    <input type="password" class="form-control input-lg" id="contrasena2" name="password_confirmation" onkeyup='check();' required> <!--registrar confirmar contraseña-->
                                                 </div>
                                                 <span id='message'></span>
                                             </div>

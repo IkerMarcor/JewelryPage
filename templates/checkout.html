@@ -176,59 +176,57 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label>Nombre(s)</label>
-                            <input class="form-control" type="text" placeholder="Juan">
+                            <input class="form-control" type="text" id="nombres" value="{{direccion['nombres']}}" readonly>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Apellido(s)</label>
-                            <input class="form-control" type="text" placeholder="Juárez">
+                            <input class="form-control" type="text" id="apellidos" value="{{direccion['apellidos']}}" readonly>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Correo electrónico</label>
-                            <input class="form-control" type="text" placeholder="ejemplo@email.com">
+                            <input class="form-control" type="text" id="correo" value="{{direccion['correo']}}" readonly>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Número de teléfono</label>
-                            <input class="form-control" type="text" placeholder="+123 456 789">
+                            <input class="form-control" type="text" id="telefono" value="{{direccion['telefono']}}" readonly>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Calle</label>
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" id="calle" value="{{direccion['calle']}}" readonly>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Colonia</label>
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" id="colonia" value="{{direccion['colonia']}}" readonly>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Número exterior</label>
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" id="num_ext" value="{{direccion['num_ext']}}" readonly>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Número interior</label>
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" id="num_int" value="{{direccion['num_int']}}" readonly>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Country</label>
-                            <select class="custom-select">
+                            <select class="custom-select" id="pais" disabled>
                                 <option selected>México</option>
                             </select>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Ciudad</label>
-                            <input class="form-control" type="text" placeholder="Hermosillo">
+                            <input class="form-control" type="text" value="{{direccion['ciudad']}}" id="ciudad" readonly>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Estado</label>
-                            <input class="form-control" type="text" placeholder="Sonora">
+                            <input class="form-control" type="text" value="{{direccion['estado']}}" readonly id="estado">
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Código Postal</label>
-                            <input class="form-control" type="text" placeholder="12345">
+                            <input class="form-control" type="text" value="{{direccion['codigo_postal']}}" readonly id="codigo_postal">
                         </div>
-                        <div class="col-md-12 form-group">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="shipto">
-                                <label class="custom-control-label" for="shipto"  data-toggle="collapse" data-target="#shipping-address">Enviar a otra dirección</label>
-                            </div>
+                        <div class="col-md-6 form-group">
+                            <label>Referencia</label>
+                            <textarea class="form-control" placeholder="La casa es de color..." rows="3" cols="30" id="referencia" readonly>{{direccion['referencia']}}</textarea>
                         </div>
                     </div>
                 </div>
@@ -321,7 +319,7 @@
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold" id="grand-total" onclick="prueba()">${{"%.2f"|format((lista_precios|sum)+80)}}</h5>
+                            <h5 class="font-weight-bold" id="grand-total">${{"%.2f"|format((lista_precios|sum)+80)}}</h5>
                         </div>
                     </div>
                 </div>
@@ -351,13 +349,12 @@
     paypal.Buttons({
         
         // Sets up the transaction when a payment button is clicked
-        
+        // document.getElementById('grand-total').innerHTML.substring(1)
         createOrder: (data, actions) => {
           return actions.order.create({
             purchase_units: [{
               amount: {
                 value: document.getElementById('grand-total').innerHTML.substring(1),
-                carrito: {{carrito|tojson}}
               }
             }]
           });
@@ -368,11 +365,27 @@
             // Successful capture! For dev/demo purposes:
             console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
             const transaction = orderData.purchase_units[0].payments.captures[0];
+            transaction['carrito']={{carrito|tojson}};
+            transaction['direccion']={
+                'nombres':document.getElementById('nombres').value,
+                'apellidos':document.getElementById('apellidos').value,
+                'correo':document.getElementById('correo').value,
+                'telefono':document.getElementById('telefono').value,
+                'calle':document.getElementById('calle').value,
+                'colonia':document.getElementById('colonia').value,
+                'numero exterior':document.getElementById('num_ext').value,
+                'numero interior':document.getElementById('num_int').value,
+                'pais':document.getElementById('pais').value,
+                'ciudad':document.getElementById('ciudad').value,
+                'estado':document.getElementById('estado').value,
+                'codigo_postal':document.getElementById('codigo_postal').value,
+                'referencia':document.getElementById('referencia').innerHTML
+            }
             //alert(`Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`);
             $.ajax({
                 type: "POST",
                 url: "/verificar_pago",
-                data: JSON.stringify(orderData),
+                data: JSON.stringify(transaction),
                 contentType: "application/json",
                 dataType: 'json',
                 success: function(result) {

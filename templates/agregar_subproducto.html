@@ -92,6 +92,7 @@
                 </select>
             </div>
             {% endif %}
+            {% if id_categoria != 2 %}
             <div class="form-group">
                 <select class="form-control" id="color" name="color">
                     {% for id_color, color in colores.items() %}
@@ -99,6 +100,7 @@
                     {% endfor %}
                 </select>
             </div>
+            {% endif %}
 
             <div class="form-group" id="imagenes">
                 <div>
