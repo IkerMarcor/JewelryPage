@@ -142,8 +142,9 @@ def enviar_correo_confirmar_pago(correo:str,nombre:str,apeliido:str,direccion:st
         cantidad=producto['cantidad']
         precio=producto['precio']   
         total=total+(float(cantidad)*float(precio))
-        email_string = email_string + f'\n {nombre_producto}   {cantidad}   {precio}'
-    email_string = email_string + f'\n \nTotal del pedido {total}'
+        email_string = email_string + f'\n {nombre_producto}   {cantidad}   ${precio}    ${float(cantidad)*float(precio)}'
+    email_string = email_string + f'\n \nMas envio         $80'
+    email_string = email_string + f'\nTotal del pedido ${total+80}'
     email_string = email_string + f'\nDireccion de envio {direccion}'
     email_string=email_string.replace('á','a')
     email_string=email_string.replace('é','e')

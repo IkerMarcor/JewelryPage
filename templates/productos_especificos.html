@@ -47,9 +47,9 @@
     <div class="container-fluid bg-secondary mb-5">
         <div class="d-inline-flex flex-column align-items-lg-baseline justify-content-center" style="min-height: 150px ">
             <div style="padding-left: 50px;">
-                <h1 class="font-weight-semi-bold text-uppercase mb-3" style="float: left; padding-right: 1100px; padding-top: 25px;">Productos generales</h1>
+                <h1 class="font-weight-semi-bold text-uppercase mb-3" style="float: left; padding-right: 1100px; padding-top: 25px;">Productos especificos</h1>
                 <a href="/" class="text-decoration-none" style="float: left;">
-                    <h1 class="m-0 display-5 font-weight-semi-bold titulo-logo"><span class="text-primary font-weight-bold "><img src="static/img/LOGO.jpg" rel="icon" height="110" style="padding-left: 25px; padding-right: 25px;"></span>Finkies</h1>
+                    <h1 class="m-0 display-5 font-weight-semi-bold titulo-logo"><span class="text-primary font-weight-bold "><img src="../static/img/LOGO.jpg" rel="icon" height="110" style="padding-left: 25px; padding-right: 25px;"></span>Finkies</h1>
                 </a>
             </div>
         </div>
@@ -57,19 +57,17 @@
 
 
     <div class="row row-cols-1 row-cols-md-5 g-4">
-        {% for id_producto,producto in productos.items() %}
+        {% for producto in productos %}
         <div class="col">
             <div class="card h-100">
-              <img src="static/img/{{producto['imagen']}}" class="card-img-top" alt="..." style="width: 100%; height: 15vw; object-fit: cover;">
+              <img src="../static/img/{{producto['imagen']}}" class="card-img-top" alt="..." style="width: 100%; height: 15vw; object-fit: cover;">
               <div class="card-body">
                 <div>
-                    <a href="/agregar_producto_especifico/{{producto['id_producto_general']}}" class="btn btn-primary">Agregar subproducto</a>
-                    <a href="/productos_especificos/{{producto['id_producto_general']}}" class="btn btn-primary">Ver subproductos</a>
-                    <a href="/editar_producto_general/{{producto['id_producto_general']}}" class="btn btn-primary">Editar</a>    
+                    <a href="/editar_producto_especifico/{{producto['id_producto_general']}}/{{producto['id_producto_especifico']}}" class="btn btn-primary">Editar</a>    
                 </div>
-                <h5 class="card-title">{{producto['nombre_general']}}</h5>
-                <p class="card-text">Descripción: {{producto['descripcion_general']}}</p>
-                <p class="card-text">Categoría: {{categorias[producto['id_categoria']|string]['categoria']}}</p>
+                <h5 class="card-title">{{producto['nombre']}}</h5>
+                <p class="card-text">Descripción: {{producto['descripcion']}}</p>
+                <p class="card-text">Precio: {{producto['precio']}}</p>
                 <p class="card-text"><small class="text-muted">Ultima actualización: {{producto['ultima_modificacion']}}</small></p>
               </div>
             </div>
